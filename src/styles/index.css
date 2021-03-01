@@ -1,0 +1,40 @@
+@charset "UTF-8";
+
+@import './global.css';
+
+.experience_bar
+{
+    display: flex;
+    align-items: center;
+}
+
+.experience_bar span
+{
+    font-size: 1rem;
+}
+
+.experience_bar > div
+{
+    flex: 1;
+    height: 4px;
+
+    border-radius: 4px;
+    
+    background-color: var(--color_gray_line);
+
+    position: relative;
+    margin: 0 1rem;
+}
+
+.experience_bar > div > div
+{
+    height: inherit;
+    background-color: var(--color_green);
+}
+
+span.current_experience
+{
+    position: absolute;
+    top: 12px;
+    transform: translateX(-50%);
+}

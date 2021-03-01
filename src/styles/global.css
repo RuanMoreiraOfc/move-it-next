@@ -1,0 +1,88 @@
+@charset "UTF-8";
+
+/* @collapse */
+
+/* #region Global */
+
+*
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root
+{
+    --color_white: #fff;
+    --color_red: #e83f5b;
+    --color_green: #4cd62b;
+    --color_blue: #5965e0;
+    --color_blue_dark: #4953b8;
+    --color_blue_twitter: #2aa9e0;
+    
+    --color_gray_line: #dcdde0;
+    --color_background: #f2f3f5;
+    
+    --color_title: #2e384d;
+    --color_text: #666;
+    --color_text_highlight: #b3b9ff;
+}
+
+body, input, textarea, button
+{
+    font: 400 1rem 'Inter', sans-serif ;
+}
+
+button
+{
+    cursor: pointer;
+    /* outline: none; */
+    border: none;
+}
+
+a
+{
+    color: inherit;
+    text-decoration: none;
+}
+
+/* #endregion */
+
+/* #region My base */
+
+html, body
+{
+    width: 100%;
+    height: 100%;
+}
+
+html
+{
+    font-size: 90%;
+}
+
+body
+{
+    display: inline-block;
+
+    color: var(--color_text);
+    background-color: var(--color_background);
+}
+
+/* #endregion */
+
+@media ( max-width: 1080px )
+{
+    html
+    {
+        font-size:  87.5%;
+    }
+}
+
+@media ( max-width: 720px )
+{
+    html
+    {
+        /* font-size:  87.5%; */
+    }
+}
