@@ -1,15 +1,15 @@
-.experienceBar
+.experienceBarContainer
 {
     display: flex;
     align-items: center;
 }
 
-.experienceBar span
+.experienceBarContainer span
 {
     font-size: 1rem;
 }
 
-.experienceBar > div
+.experienceBarContainer > div
 {
     flex: 1;
     height: 4px;
@@ -22,10 +22,14 @@
     margin: 0 1.5rem;
 }
 
-.experienceBar > div > div
+div.experienceBar
 {
+    width: var(--startPoint);
     height: inherit;
+
     background-color: var(--color_green);
+
+    animation-name: play_scaling_up;
 }
 
 span.currentExperience
@@ -34,5 +38,34 @@ span.currentExperience
     
     position: absolute;
     top: 12px;
+    left: var(--startPoint);
     transform: translateX(-50%);
+
+    animation-name: play_moving_up;
+}
+
+div.experienceBar, span.currentExperience
+{
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
+}
+
+@keyframes play_scaling_up
+{
+    from {
+        width: var(--startPoint);
+    }
+    to {
+        width: var(--endPoint);
+    }
+}
+
+@keyframes play_moving_up
+{
+    from {
+        left: var(--startPoint);
+    }
+    to {
+        left: var(--endPoint);
+    }
 }

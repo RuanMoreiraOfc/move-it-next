@@ -14,14 +14,31 @@ interface IChallenge
     amount: number;
 }
 
+interface IConfig
+{
+    get: () => number;
+    set: (newMsValue: number) => void;
+}
+
 interface IChallengesContextData {
     level: number;
+
+    lastExperience: number;
     currentExperience: number;
-    experienceToNextLevel: number;
+    getExperienceToSpecificLevel: ( currentLevel?: number ) => number;
+
+    onGainExperience: boolean;
+    onLevelUp: boolean;
+
+    inLevelingUp: boolean;
+    inLevelingUpOffDelayConfig: IConfig;
+
     activeChallenge: IChallenge;
     completedChallenges: number;
 
+    OpenLevelUpModal: () => void;
     CloseLevelUpModal: () => void;
+
     StartNewChallenge: () => void;
     CompleteChallenge: () => void;
     ResetChallenge: () => void;
@@ -40,33 +57,73 @@ export function ChallengesContextProvider( { children, ...initiator }: IChalleng
     //#region UseStates 
 
     const [level, setLevel] = useState( initiator.level ?? 1 );
-    const [currentExperience, setCurrentExperience] = useState( initiator.currentExperience ?? 0 );
-    const [completedChallenges, setCompletedChallenges] = useState( initiator.completedChallenges ?? 0 );
+
+    const [currentExperience, setCurrentExperience] = useState( initiator.currentExperience ?? 30 );
+    const [lastExperience, setLastExperience] = useState( 0 );
+
+    const [onGainExperience, setOnGainExperience] = useState( false );
+    const [onLevelUp, setOnLevelUp] = useState( false );
+
+    const [inLevelingUp, setInLevelingUp] = useState( false );
+    const [inLevelingUpOffDelay, setInLevelingUpOffDelay] = useState( -1 );
+    const inLevelingUpOffDelayConfig = { get: () => inLevelingUpOffDelay, set: setInLevelingUpOffDelay }
+
     const [activeChallenge, setActiveChallenge] = useState( null );
+    const [completedChallenges, setCompletedChallenges] = useState( initiator.completedChallenges ?? 0 );
 
     const [isLevelModalOpen, setisLevelModalOpen] = useState( false );
     
-    const getExperienceToNextLevel = ( currentLevel: number ) => Math.pow( ( currentLevel + 1 ) * 4, 2 );
-    const experienceToNextLevel = getExperienceToNextLevel(level);
+    const getExperienceToSpecificLevel = ( currentLevel = level ) => Math.pow( ( currentLevel + 1 ) * 4, 2 );
 
     //#endregion
 
     useEffect( () => {
-        Notification.requestPermission()
+        Notification.requestPermission();
+        TriggerGainExperience()
     }, [] )
     
     {
         const cookies = { level, currentExperience, completedChallenges }
-        const handleCookies = ([key, value]: string[]) => Cookies.set(key, value)
+        //FIXME: COOKIES
+        const handleCookies = ([key, value]: string[]) => {}//Cookies.set(key, value)
         
         useEffect(
             Array.prototype.forEach.bind( Object.entries(cookies), handleCookies )
         , [{ ...Object.keys(cookies) }] )
     }
 
+    function TriggerGainLevel( afterGainLevel: () => void )
+    {
+        setInLevelingUp( true );
+
+        setTimeout( () =>  {
+            setInLevelingUp(false);
+            
+            setOnLevelUp( true );
+            setTimeout( setOnLevelUp.bind(null, false) , 1 );
+
+            afterGainLevel();
+        }, inLevelingUpOffDelay );
+    }
+
+    function TriggerGainExperience()
+    {
+        setOnGainExperience( true )
+        setTimeout( setOnGainExperience.bind(null, false), 0 )
+    }
+
     function LevelUp()
     {
-        setLevel(level + 1);
+        setLevel( level + 1 )
+
+        TriggerGainLevel( function afterGainLevel()
+        {
+            // OpenLevelUpModal()
+        } )
+    }
+
+    function OpenLevelUpModal()
+    {
         setisLevelModalOpen( true )
     }
 
@@ -84,11 +141,12 @@ export function ChallengesContextProvider( { children, ...initiator }: IChalleng
 
         new Audio('/notification.mp3').play();
 
-            if ( Notification.permission === 'granted' )
-        new Notification('Novo desafio 🎉', {
-            body: `Valendo ${challenge.amount}xp`
-            , silent: true
-        });
+        if ( Notification.permission === 'granted' ) {
+            new Notification( 'Novo desafio 🎉', {
+                body: `Valendo ${challenge.amount}xp`
+                , silent: true
+            } );
+        }
     }
     
     function CompleteChallenge()
@@ -97,17 +155,19 @@ export function ChallengesContextProvider( { children, ...initiator }: IChalleng
             return;
 
         const currentExperienceNow = currentExperience + activeChallenge.amount;
+        const experienceToNextLevel = getExperienceToSpecificLevel(level);
 
         setActiveChallenge( null );
 
         setCompletedChallenges( completedChallenges + 1 )
-        setCurrentExperience( currentExperienceNow )
 
-        if ( currentExperienceNow < experienceToNextLevel )
-            return;
-
-        LevelUp()
+        setLastExperience( currentExperience )
         setCurrentExperience( currentExperienceNow % experienceToNextLevel )
+
+        TriggerGainExperience();
+
+        if ( currentExperienceNow >= experienceToNextLevel )
+            LevelUp()
     }
 
     function ResetChallenge()
@@ -118,13 +178,19 @@ export function ChallengesContextProvider( { children, ...initiator }: IChalleng
     return (
         <ChallengesContext.Provider value={{
             level
+            , lastExperience
             , currentExperience
-            , experienceToNextLevel
+            , getExperienceToSpecificLevel
+            , onGainExperience
+            , onLevelUp
+            , inLevelingUp
+            , inLevelingUpOffDelayConfig
             , completedChallenges
             , activeChallenge
             , StartNewChallenge
             , CompleteChallenge
             , ResetChallenge
+            , OpenLevelUpModal
             , CloseLevelUpModal
         }}>
             { isLevelModalOpen && <LevelUpModal /> }

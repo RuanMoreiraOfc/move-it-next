@@ -1,6 +1,6 @@
-import { useState, useEffect, useContext, createContext, ReactNode } from "react";
-
 import { ChallengesContext } from './ChallengesContext';
+
+import { useState, useEffect, useContext, createContext, ReactNode } from "react";
 
 interface ICountdownContextData {
     minutes: number;
@@ -24,7 +24,7 @@ export function CountdownContextProvider( { children }: ICountdownContextProvide
     
     const { StartNewChallenge } = useContext(ChallengesContext)
     
-	const maxTimer = 25 * 60;
+	const maxTimer = 1 || 25 * 60;
     
 	const [timer, setTimer] = useState( maxTimer );
 	const [isActive, setIsActive] = useState( false );
