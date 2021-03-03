@@ -14,29 +14,44 @@ interface IChallenge
     amount: number;
 }
 
-interface IConfig
+interface ITimerConfig
 {
-    get: () => number;
-    set: (newMsValue: number) => void;
+    get: {
+        treatedTimer: ( value?: number ) => number
+        , timer: () => number
+        , multiplier: () => number
+    };
+    set: {
+        timer: (newMsValue: number) => void
+        , multiplier: (newMultiplierValue: number) => void
+    };
+}
+
+export enum EnumContext
+{
+    none
+    , onGainExp
+    , onLevelUp
+    , onGainedExp
+    , isGainingExp
+    , isLevelingUp
+    , isPosLevelingUp
 }
 
 interface IChallengesContextData {
+    inContext: ( value?: EnumContext ) => boolean;
+
     level: number;
 
     lastExperience: number;
     currentExperience: number;
     getExperienceToSpecificLevel: ( currentLevel?: number ) => number;
 
-    onGainExperience: boolean;
-    onLevelUp: boolean;
-
-    inLevelingUp: boolean;
-    inLevelingUpOffDelayConfig: IConfig;
+    experienceUpdatingTimerConfig: ITimerConfig;
 
     activeChallenge: IChallenge;
     completedChallenges: number;
 
-    OpenLevelUpModal: () => void;
     CloseLevelUpModal: () => void;
 
     StartNewChallenge: () => void;
@@ -48,7 +63,7 @@ export const ChallengesContext = createContext( {} as IChallengesContextData );
 
 interface IChallengesContextProviderProps {
     level: number;
-    currentExperience: number;
+    currentExperience: number ;
     completedChallenges: number;
     children: ReactNode;
 }
@@ -56,17 +71,26 @@ interface IChallengesContextProviderProps {
 export function ChallengesContextProvider( { children, ...initiator }: IChallengesContextProviderProps ) {
     //#region UseStates 
 
+    const [context, setContex] = useState( EnumContext.none );
+    const inContext = ( value = EnumContext.none ) => context === value ;
+
     const [level, setLevel] = useState( initiator.level ?? 1 );
 
-    const [currentExperience, setCurrentExperience] = useState( initiator.currentExperience ?? 30 );
+    const [currentExperience, setCurrentExperience] = useState( 0 );
     const [lastExperience, setLastExperience] = useState( 0 );
 
-    const [onGainExperience, setOnGainExperience] = useState( false );
-    const [onLevelUp, setOnLevelUp] = useState( false );
-
-    const [inLevelingUp, setInLevelingUp] = useState( false );
-    const [inLevelingUpOffDelay, setInLevelingUpOffDelay] = useState( -1 );
-    const inLevelingUpOffDelayConfig = { get: () => inLevelingUpOffDelay, set: setInLevelingUpOffDelay }
+    const [experienceUpdatingTimer, setExperienceUpdatingTimer] = useState( -1 );
+    const [experienceUpdatingTimerMultiplier, setExperienceUpdatingTimerMultiplier] = useState( 1 );
+    const experienceUpdatingTimerConfig: ITimerConfig = {
+        get: {
+            treatedTimer: ( multiplier = experienceUpdatingTimerMultiplier ) => experienceUpdatingTimer * multiplier
+            , timer: () => experienceUpdatingTimer
+            , multiplier: () => experienceUpdatingTimerMultiplier
+        }, set: {
+            timer: setExperienceUpdatingTimer.bind(null)
+            , multiplier: setExperienceUpdatingTimerMultiplier.bind(null)
+        }
+    };
 
     const [activeChallenge, setActiveChallenge] = useState( null );
     const [completedChallenges, setCompletedChallenges] = useState( initiator.completedChallenges ?? 0 );
@@ -79,47 +103,71 @@ export function ChallengesContextProvider( { children, ...initiator }: IChalleng
 
     useEffect( () => {
         Notification.requestPermission();
-        TriggerGainExperience()
+
+        if ( initiator.currentExperience ) {
+            GainExperience( initiator.currentExperience );
+        }
     }, [] )
     
     {
         const cookies = { level, currentExperience, completedChallenges }
-        //FIXME: COOKIES
-        const handleCookies = ([key, value]: string[]) => {}//Cookies.set(key, value)
+        const handleCookies = ([key, value]: string[]) => ( process.env.NODE_ENV !== 'development' ) && Cookies.set(key, value)
         
         useEffect(
             Array.prototype.forEach.bind( Object.entries(cookies), handleCookies )
         , [{ ...Object.keys(cookies) }] )
     }
 
-    function TriggerGainLevel( afterGainLevel: () => void )
-    {
-        setInLevelingUp( true );
-
-        setTimeout( () =>  {
-            setInLevelingUp(false);
-            
-            setOnLevelUp( true );
-            setTimeout( setOnLevelUp.bind(null, false) , 1 );
-
-            afterGainLevel();
-        }, inLevelingUpOffDelay );
+    function NextFrame( posFrameFunction: () => void ) {
+        setTimeout( posFrameFunction, 0 );
     }
 
-    function TriggerGainExperience()
+    function GainExperience( value: number )
     {
-        setOnGainExperience( true )
-        setTimeout( setOnGainExperience.bind(null, false), 0 )
+        const currentExperienceNow = currentExperience + value;
+        const experienceToNextLevel = getExperienceToSpecificLevel(level);
+
+        setLastExperience( currentExperience )
+        setCurrentExperience( currentExperienceNow % experienceToNextLevel )
+        
+        TriggerGainExperience( function afterGainExperience() {
+            if ( currentExperienceNow >= experienceToNextLevel )
+                LevelUp();
+        } );
     }
 
     function LevelUp()
     {
         setLevel( level + 1 )
+        
+        TriggerGainLevel( OpenLevelUpModal )
+    }
 
-        TriggerGainLevel( function afterGainLevel()
-        {
-            // OpenLevelUpModal()
+    function TriggerGainExperience( afterGainExperience: () => void )
+    {
+        setContex( EnumContext.onGainExp );
+        NextFrame( () => {
+            setContex(EnumContext.isGainingExp);
+            afterGainExperience();
         } )
+        setTimeout( () => {
+            setContex(EnumContext.onGainedExp)
+            NextFrame( setContex.bind(null, EnumContext.none) )
+        }, experienceUpdatingTimer );
+    }
+
+    function TriggerGainLevel( afterGainLevel: () => void )
+    {
+        setContex( EnumContext.isLevelingUp )
+
+        setTimeout( () =>  {
+            setLastExperience( 0 );
+
+            setContex( EnumContext.onLevelUp );
+            NextFrame( setContex.bind(null, EnumContext.isPosLevelingUp) );
+
+            afterGainLevel();
+        }, experienceUpdatingTimerConfig.get.treatedTimer() );
     }
 
     function OpenLevelUpModal()
@@ -154,20 +202,11 @@ export function ChallengesContextProvider( { children, ...initiator }: IChalleng
         if ( !activeChallenge )
             return;
 
-        const currentExperienceNow = currentExperience + activeChallenge.amount;
-        const experienceToNextLevel = getExperienceToSpecificLevel(level);
-
         setActiveChallenge( null );
 
         setCompletedChallenges( completedChallenges + 1 )
 
-        setLastExperience( currentExperience )
-        setCurrentExperience( currentExperienceNow % experienceToNextLevel )
-
-        TriggerGainExperience();
-
-        if ( currentExperienceNow >= experienceToNextLevel )
-            LevelUp()
+        GainExperience( activeChallenge.amount );
     }
 
     function ResetChallenge()
@@ -177,20 +216,17 @@ export function ChallengesContextProvider( { children, ...initiator }: IChalleng
 
     return (
         <ChallengesContext.Provider value={{
-            level
+            inContext
+            , level
             , lastExperience
             , currentExperience
             , getExperienceToSpecificLevel
-            , onGainExperience
-            , onLevelUp
-            , inLevelingUp
-            , inLevelingUpOffDelayConfig
+            , experienceUpdatingTimerConfig
             , completedChallenges
             , activeChallenge
             , StartNewChallenge
             , CompleteChallenge
             , ResetChallenge
-            , OpenLevelUpModal
             , CloseLevelUpModal
         }}>
             { isLevelModalOpen && <LevelUpModal /> }

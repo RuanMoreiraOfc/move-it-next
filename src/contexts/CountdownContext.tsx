@@ -24,7 +24,7 @@ export function CountdownContextProvider( { children }: ICountdownContextProvide
     
     const { StartNewChallenge } = useContext(ChallengesContext)
     
-	const maxTimer = 1 || 25 * 60;
+	const maxTimer = ( process.env.NODE_ENV === 'development' ) ? 0 : 25 * 60;
     
 	const [timer, setTimer] = useState( maxTimer );
 	const [isActive, setIsActive] = useState( false );

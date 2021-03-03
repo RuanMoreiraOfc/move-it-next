@@ -22,6 +22,29 @@
     margin: 0 1.5rem;
 }
 
+span.hasPulser.onRender
+{
+    animation-duration: var(--duration_on_render);
+}
+
+span.hasPulser
+{
+    animation-name: play_text_pulse;
+    animation-duration: var(--duration_pos_render);
+}
+
+@keyframes play_text_pulse
+{
+    50% {
+        transform: scale(1.5);
+        font-weight: bolder;
+    }
+    to {
+        transform: scale(1);
+        font-weight: normal;
+    }
+}
+
 div.experienceBar
 {
     width: var(--startPoint);
@@ -50,6 +73,28 @@ div.experienceBar, span.currentExperience
     animation-timing-function: ease-out;
 }
 
+/* #region DYNAMIC COUNTER( ONLY ON CHROMIUM SO FAR ) */
+
+@property --exp
+{
+    syntax: '<integer>';
+    initial-value: 0;
+    inherits: false;
+}
+
+span.currentExperience.hasCounter
+{
+    color: inherit !important;
+    counter-reset: exp var(--exp);
+}
+
+span.currentExperience.hasCounter::after
+{
+    content: counter(exp) ' exp';
+}
+
+/* #endregion */
+
 @keyframes play_scaling_up
 {
     from {
@@ -64,8 +109,10 @@ div.experienceBar, span.currentExperience
 {
     from {
         left: var(--startPoint);
+        --exp: var(--lastExp);
     }
     to {
         left: var(--endPoint);
+        --exp: var(--currentExp);
     }
 }

@@ -26,7 +26,12 @@ export function Countdown() {
 	function ButtonBase( props: IButtonBaseProps )
 	{
 		return (
-			<button onClick={ props.onClick } type='button' disabled={ props.disabled || false } className={ styles.countdownButton + " " + ( props.extraClassName || '' ) } >
+			<button
+				onClick={ props.onClick }
+				type='button'
+				disabled={ props.disabled || false }
+				className={ `${styles.countdownButton} ${props.extraClassName || '' }` }
+			>
 				{ props.textChildren }
 				<span className={styles[props.imageChildren + 'Icon']}/>
 			</button>

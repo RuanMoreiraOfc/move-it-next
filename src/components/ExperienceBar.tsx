@@ -1,18 +1,18 @@
+// @collapse
+
 import styles from '../styles/components/ExperienceBar.module.css'
 
-import { ChallengesContext } from '../contexts/ChallengesContext';
+import { EnumContext, ChallengesContext } from '../contexts/ChallengesContext';
 
 import { useEffect, useContext, CSSProperties } from "react";
 
 export function ExperienceBar() {
 	const {
-		level
-		, onLevelUp
-		, inLevelingUp: inLeveling
-		, inLevelingUpOffDelayConfig: delayConfig
-		, onGainExperience: onProgress
-		, lastExperience: lastProgress
-		, currentExperience: progress
+		inContext
+		, experienceUpdatingTimerConfig: delayConfig
+		, level
+		, lastExperience: lastExp
+		, currentExperience: currentExp
 		, getExperienceToSpecificLevel: getMaxProgress
 	} = useContext(ChallengesContext)
 
@@ -20,50 +20,110 @@ export function ExperienceBar() {
 		return Math.floor(progressPoint / getMaxProgress() * 100) + '%';
 	}
 	
-// DECLARATION
+// #region DECLARATION
 
-	const startPoint = getProgressPerCent( lastProgress );
-	const endPoint = getProgressPerCent( progress );
+	const startPoint = getProgressPerCent( lastExp );
+	const endPoint = getProgressPerCent( currentExp );
 
-	const inlineProps = { startPoint, endPoint };
+	const inlineProps = { startPoint, endPoint, lastExp, currentExp };
 
-// SETTING UP
+// #endregion
 
-	useEffect( delayConfig.set.bind(null, 1600), [] );
+// #region SETTING UP
 
-	const inlineStyle = { animationDuration: `${ delayConfig.get() * 1.25 }ms` } as CSSProperties;
+	const maxDelayTimer = 1000;
+	const maxDelayMultiplier = 0.95;
+
+	useEffect( () => {
+		delayConfig.set.timer(maxDelayTimer);
+		delayConfig.set.multiplier(maxDelayMultiplier);
+	}, [] );
+
+	const inlineMotionStyle = { animationDuration: `${ delayConfig.get.timer() }ms` } as CSSProperties;
+	const inlineHighlightStyle = { '--duration_on_render': `${ delayConfig.get.treatedTimer() }ms`, '--duration_pos_render': `${ delayConfig.get.treatedTimer(1 - maxDelayMultiplier) * 5 }ms` } as CSSProperties;
 	
 		for ( const prop in inlineProps )
-	inlineStyle['--' + prop] = inlineProps[prop];
+	inlineMotionStyle['--' + prop] = inlineProps[prop];
 
-// CHECKING IT OUT
+// #endregion
 
-	//TODO: ANIMATION ON LEVEL
+// #region CHECKING IT OUT
 
-	if ( inLeveling ) {
-		inlineStyle['--startPoint'] =  Math.floor(lastProgress / getMaxProgress(level - 1) * 100) + '%';
-		inlineStyle['--endPoint'] = '100%';
-		inlineStyle.animationDuration = delayConfig.get() + 'ms';
+
+	if ( inContext(EnumContext.isLevelingUp) ) {
+		inlineMotionStyle['--startPoint'] =  Math.floor(lastExp / getMaxProgress(level - 1) * 100) + '%';
+		inlineMotionStyle['--endPoint'] = '100%';
+
+		inlineMotionStyle['--currentExp'] = getMaxProgress(level - 1);
+		inlineMotionStyle.color = 'transparent';
+		inlineMotionStyle.animationDuration = `${delayConfig.get.treatedTimer()}ms`;
 	}
 
-	if ( onLevelUp || ( !onProgress && !inLeveling ) ) {
-		inlineStyle['--startPoint'] = '0%'
+	if ( inContext(EnumContext.isPosLevelingUp) ) {
+		inlineHighlightStyle.animationName = 'none';
 	}
 
-	if ( onLevelUp || onProgress ) {
-		inlineStyle.animationName = 'none';
+	if ( inContext(EnumContext.isPosLevelingUp) || inContext(EnumContext.onGainExp) ) {
+		inlineMotionStyle.animationName = 'none';
 	}
 	
+// #endregion
+
+	function RemoverPosRender(event: AnimationEvent){
+		const target = event.target as HTMLElement;
+
+		if ( !target.className.includes( styles.onRender ) )
+	return;
+
+		target.className = (
+			Array.from(target.classList)
+				.filter( classItem => classItem != styles.onRender)
+				.join(' ')
+		);
+	}
+	
+// #region  DYNAMIC COUNTER( ONLY ON CHROMIUM SO FAR < chrome: 78 > )
+	
+	const haveCounterCssFeature = Boolean( CSS['registerProperty'] );
+
+	function CreateCounter(event: AnimationEvent){
+		const target = event.target as HTMLElement;
+
+		if ( !haveCounterCssFeature )
+	return;
+
+		if ( target.className.includes( styles.hasCounter ) )
+	return;
+
+		target.className += ' ' + styles.hasCounter;
+		target.innerText = '';
+	}
+
+// #endregion
+
 	return (
 		<header className={ styles.experienceBarContainer }>
 			<span>0 exp</span>
 			<div>
-				<div className={ styles.experienceBar } style={ inlineStyle } />
-				<span className={ styles.currentExperience } style={ inlineStyle } >
-					{progress} exp
+				<div
+					className={ styles.experienceBar }
+					style={ inlineMotionStyle }
+				/>
+				<span
+					className={ styles.currentExperience }
+					style={ inlineMotionStyle }
+					onAnimationStart={ CreateCounter.bind(null) }
+				>
+					{ currentExp } exp
 				</span>
 			</div>
-			<span>{ getMaxProgress( level - Number(inLeveling) ) } exp</span>
+			<span
+				className={ `${styles.hasPulser} ${styles.onRender}` }
+				onAnimationEnd={ RemoverPosRender.bind(null) }
+				style={ inlineHighlightStyle }
+			>
+				{ getMaxProgress( level - Number(inContext(EnumContext.isLevelingUp)) ) } exp
+			</span>
 		</header>
 	)
 }
