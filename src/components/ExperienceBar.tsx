@@ -83,8 +83,8 @@ export function ExperienceBar() {
 	}
 	
 // #region  DYNAMIC COUNTER( ONLY ON CHROMIUM SO FAR < chrome: 78 > )
-	
-	const haveCounterCssFeature = Boolean( CSS['registerProperty'] );
+
+	const haveCounterCssFeature = Boolean( !process ) && Boolean( CSS['registerProperty'] );
 
 	function CreateCounter(event: AnimationEvent){
 		const target = event.target as HTMLElement;

@@ -16,4 +16,5 @@
 
 ### 🚨 Fixed Bugs
 
+*   [X] Deploy not possible because window.CSS not exist on NodeJS
 *   [X] Animated Bar sometimes don't start from 0% width
