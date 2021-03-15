@@ -1,6 +1,8 @@
 @charset "UTF-8";
 
 @import './global.css';
+@import './global.animations.css';
+
 
 .experience_bar
 {

@@ -1,0 +1,18 @@
+@charset "UTF-8";
+
+:root
+{
+    --play_text_pulse: play_text_pulse;
+}
+
+@keyframes play_text_pulse
+{
+    50% {
+        transform: scale(1.5);
+        font-weight: bolder;
+    }
+    to {
+        transform: scale(1);
+        font-weight: normal;
+    }
+}
