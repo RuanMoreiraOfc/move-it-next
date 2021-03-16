@@ -2,17 +2,55 @@
 
 :root
 {
+    --play_fade_in: play_fade_in;
+    --play_box_pulse: play_box_pulse;
     --play_text_pulse: play_text_pulse;
+    --play_open_box_width-height: play_open_box_width-height;
+}
+
+@keyframes play_fade_in
+{
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+
+@keyframes play_box_pulse
+{
+    50% {
+        transform: scale(1.5);
+    }
+    to {
+        transform: scale(1);
+    }
 }
 
 @keyframes play_text_pulse
 {
     50% {
-        transform: scale(1.5);
         font-weight: bolder;
     }
     to {
-        transform: scale(1);
         font-weight: normal;
+    }
+}
+
+@keyframes play_open_box_width-height
+{
+    from {
+        width: 0%;
+        height: 0%;
+    }
+    50% {
+        width: 75%;
+        height: 50%;
+    }
+    to {
+        width: 100%;
+        height: 100%;
     }
 }

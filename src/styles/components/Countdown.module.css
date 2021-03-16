@@ -94,18 +94,22 @@
 {
     display: inline-block;
     
+    margin-top: 0.1rem;
     margin-left: 1rem;
 
     width: 1rem;
     height: 1rem;
 
-    mask-size: cover;
     background-color: var(--color_white);
+    
+    mask-position: center;
 }
 
 .countdownButton > span.playIcon
 {
-    mask: url(../../../public/icons/play.svg) center;
+    margin-top: 0;
+
+    mask-image: url("/icons/play.svg");
 }
 
 .countdownButton:not(:hover) > span.closeIcon
@@ -115,13 +119,15 @@
 
 .countdownButton > span.closeIcon
 {
-    mask: url(../../../public/icons/close.svg) center;
+    mask-image: url("/icons/close.svg");
 }
 
 .countdownButton > span.doneIcon
 {
     background-color: var(--color_green);
-    mask: url(../../../public/icons/done.svg) center / 1.1rem;
+
+    mask-image: url("/icons/done.svg");
+    mask-size: 1.1rem;
 
     animation: 
         play_conclude_countdown 0.1s 1s forwards ease-in-out

@@ -13,12 +13,18 @@
     bottom: 0;
     left: 0;
     right: 0;
+
+    animation: var(--play_fade_in);
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
 }
 
 .container
 {
-    width: 100%;
+    overflow: hidden;
     max-width: 400px;
+    max-height: 275px;
     padding: 2rem 3rem;
 
     background: var(--color_white);
@@ -29,16 +35,85 @@
     text-align: center;
 
     position: relative;
+
+    animation: var(--play_open_box_width-height);
+    animation-duration: 1.75s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
 }
 
 .container > header
 {
-    color: var(--color_blue);
-    background: url('/icons/levelup.svg') no-repeat center / contain ;
+    color: transparent;
 
     font-size: 8.75rem;
     font-weight: 600;
+
+    position: relative;
+}
+
+.container > header::after
+, .container > header::before
+{
+    content: "";
     
+    width: 100%;
+    height: 100%;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.container > header::after
+{
+    content: attr(data-level);
+
+    color: var(--color_blue);
+
+    animation: var(--play_box_pulse);
+    animation-delay: 0.5s;
+    animation-duration: 0.75s;
+    animation-timing-function: ease-in-out;
+}
+
+.container > header::before
+{
+    content: "";
+
+    background-color: var(--color_green);
+    mask-image: url('/icons/levelup.svg');
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+
+    animation-name: play_floating_laurel;
+    animation-duration: 3s;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes play_floating_laurel
+{ 
+    from {
+        transform:
+            translateY(0px)
+            rotate(-1.5deg)
+        ;
+    }
+    50% {
+        transform:
+            translateY(7.5px)
+            rotate(0deg)
+        ;
+    }
+    to {
+        transform:
+            translateY(0px)
+            rotate(-1.5deg)
+        ;
+    }
 }
 
 .container > strong

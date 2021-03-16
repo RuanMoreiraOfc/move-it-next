@@ -7,10 +7,12 @@ import { useContext } from 'react';
 export function LevelUpModal() {
     const { level, CloseLevelUpModal } = useContext( ChallengesContext )
 
+    // TODO: https://github.com/mathusummut/confetti.js
+
     return (
         <div className={ styles.overlay }>
             <div className={ styles.container } >
-                <header>{level}</header>
+                <header data-level={level} >{level}</header>
 
                 <strong>Parabéns 🎉</strong>
                 <p>Você alcançou um novo level.</p>

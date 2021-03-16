@@ -43,6 +43,6 @@ span.hasPulser.onRender
 span.hasPulser
 {
     display: inline-block;
-    animation: var(--play_text_pulse);
+    animation: var(--play_box_pulse), var(--play_text_pulse);
     animation-duration: var(--duration_pos_render);
 }
