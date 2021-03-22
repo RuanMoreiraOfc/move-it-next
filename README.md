@@ -3,9 +3,9 @@
 <p align="center">
   <a>ENGLISH</a>
   |
-  <a href="README_PORTUGUESE.md" style="color: green">PORTUGUÊS</a>
+  <a href="README_PORTUGUESE.md">PORTUGUÊS</a>
   |
-  <a href="#README_JAPANESE.md" style="color: red">日本語</a>
+  <a href="#README_JAPANESE.md">日本語</a>
 </p>
 
 <p align="center">
