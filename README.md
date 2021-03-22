@@ -89,7 +89,7 @@ This project is under the MIT license. See the [LICENSE](LICENSE) for more infor
 
 # :boy: Author <span id="AUTHOR"></span>
 
-<span align="center">
+<span>
   <p>
     <img
       alt="Autor - Ruan Moreira de Jesus"
