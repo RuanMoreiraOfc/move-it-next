@@ -1,10 +1,10 @@
 # 🏁 Push Descriptor
-***
 
 ### 🔧 Refactored Subjects
 
-* <README>
-    * ADD SCREENSHOTS
+* \<README>
+    * REFINE
+* \<PUSH DESCRIPTOR>
 
 ### ➕ Features 
 
