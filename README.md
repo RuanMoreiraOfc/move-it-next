@@ -1,14 +1,14 @@
-<h1 style="text-align: center">Move-it</h1>
+<h1 align="center">Move-it</h1>
 
-<p style="margin-top: -10px;text-align: center">
+<p align="center">
   <a>ENGLISH</a>
   |
-  <a href="README_PORTUGUESE.md" style="color: green">PORTUGUÊS</a>
+  <a href="README_PORTUGUESE.md">PORTUGUÊS</a>
   |
-  <a href="#README_JAPANESE.md" style="color: red">日本語</a>
+  <a href="#README_JAPANESE.md">日本語</a>
 </p>
 
-<p style="text-align: center">
+<p align="center">
     <img src="https://img.shields.io/github/languages/count/ruanmoreiraofc/move-it-next?label=Languages&style=for-the-badge">
     <a href="#CLONE">
         <img src="https://img.shields.io/github/repo-size/ruanmoreiraofc/move-it-next?label=Git%20Clone&style=for-the-badge">
@@ -22,13 +22,13 @@
     </a>
 </p>
 
-## About {#ABOUT}
+## About <span id="ABOUT"></span>
 
 Move-it was created to promote "motion" to people who stays in front of pc for long periods, with simples tasks like warm-up exercises.
 
 Project made on NLW#4(Next Level Week) with <a href="https://github.com/diego3g" title="CTO at Rocketseat">Diego Fernandes</a> at React Journey.
 
-## :triangular_ruler: Technology {#TECHNOLOGY}
+## :triangular_ruler: Technology <span id="TECHNOLOGY"></span>
 
 It was used on development:
 
@@ -37,11 +37,23 @@ It was used on development:
 - [NextJS](https://nextjs.org/)
 - [JS-Cookie](https://github.com/js-cookie/js-cookie)
 
-## :camera: Screenshots {#LOOKING}
+## :camera: Screenshots <span id="LOOKING"></span>
+
+Firts Look:
+![initial](https://user-images.githubusercontent.com/36450847/111938870-ad81c080-8aa9-11eb-8cad-fcc90f96095d.jpg)
+
+Started Timer:
+![abandon](https://user-images.githubusercontent.com/36450847/111938871-ae1a5700-8aa9-11eb-8967-e1bfa030b11b.jpg)
+
+Conclude Cycle:
+![conclude](https://user-images.githubusercontent.com/36450847/111938874-aeb2ed80-8aa9-11eb-899e-4f5e8f50f223.jpg)
+
+Level Up:
+![levelup](https://user-images.githubusercontent.com/36450847/111938875-aeb2ed80-8aa9-11eb-9d61-3aee8be3d38f.jpg)
 
 ## [:eyes: Preview](https://move-it-lac.vercel.app/)
 
-## :electric_plug: Requirements {#CLONE}
+## :electric_plug: Requirements <span id="CLONE"></span>
 
 Before to start, you will need have installed on your computer these programs:
 
@@ -73,17 +85,18 @@ npm run dev
 At the end of the process, just open this link into your browser:
 - [localhost:3000](http://localhost:3000)
 
-## :balance_scale: License {#LICENSE}
+## :balance_scale: License <span id="LICENSE"></span>
 
 This project is under the MIT license. See the [LICENSE](LICENSE) for more information.
 
-# :boy: Author {#AUTHOR}
-<div style="text-align: center">
+# :boy: Author <span id="AUTHOR"></span>
+
+<span>
   <p>
     <img
       alt="Autor - Ruan Moreira de Jesus"
       title="Ruan Moreira de Jesus"
-      style="border-radius: 50%; width: 100px"
+      width="100"
       src="http://github.com/ruanmoreiraofc.png">
   </p>
 
@@ -106,4 +119,4 @@ This project is under the MIT license. See the [LICENSE](LICENSE) for more infor
       alt="Github - RuanMoreiraOfc"
       src="https://img.shields.io/github/followers/ruanmoreiraofc?style=social">
   </a>
-</div>
+</span>

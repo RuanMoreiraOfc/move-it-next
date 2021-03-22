@@ -1,34 +1,34 @@
-<h1 style="text-align: center">Move-it</h1>
+<h1 align="center">Move-it</h1>
 
-<p style="margin-top: -10px;text-align: center">
+<p align="center">
   <a>PORTUGUÊS</a>
   |
-  <a href="README.md" style="color: green">ENGLISH</a>
+  <a href="README.md">ENGLISH</a>
   |
-  <a href="#README_JAPANESE.md" style="color: red">日本語</a>
+  <a href="#README_JAPANESE.md">日本語</a>
 </p>
 
-<p style="text-align: center">
-    <img src="https://img.shields.io/github/languages/count/ruanmoreiraofc/move-it-next?label=Linguagens&style=for-the-badge">
+<p align="center">
+    <img src="https://img.shields.io/github/languages/count/ruanmoreiraofc/move-it-next?label=Languages&style=for-the-badge">
     <a href="#CLONE">
         <img src="https://img.shields.io/github/repo-size/ruanmoreiraofc/move-it-next?label=Git%20Clone&style=for-the-badge">
     </a>
-    <img src="https://img.shields.io/github/languages/code-size/ruanmoreiraofc/move-it-next?label=C%C3%B3digo&style=for-the-badge">
+    <img src="https://img.shields.io/github/languages/code-size/ruanmoreiraofc/move-it-next?label=Code&style=for-the-badge">
     <a href="#LICENSE">
-        <img src="https://img.shields.io/github/license/ruanmoreiraofc/move-it-next?label=Licen%C3%A7a&style=for-the-badge">
+        <img src="https://img.shields.io/github/license/ruanmoreiraofc/move-it-next?label=License&style=for-the-badge">
     </a>
     <a href="https://github.com/ruanmoreiraofc/move-it-next/issues?q=is%3Aopen">
         <img src="https://img.shields.io/github/issues/ruanmoreiraofc/move-it-next?style=for-the-badge">
     </a>
 </p>
 
-## Sobre {#ABOUT}
+## Sobre <span id="ABOUT"></span>
 
 Criado com objetivo de ajudar pessoas que passam muito tempo na frente do computador, essa aplicação te dá tarefas como: alongamentos, exercícios para visão; para evitar doenças ou problemas relacionados.
 
 Projeto feito durante o NLW#4(Next Level Week) com <a href="https://github.com/diego3g" title="CTO da Rocketseat">Diego Fernandes</a> na trilha de React.
 
-## :triangular_ruler: Tecnologias {#TECHNOLOGY}
+## :triangular_ruler: Tecnologia <span id="TECHNOLOGY"></span>
 
 As seguintes ferramentas foram usadas na construção do projeto:
 
@@ -37,11 +37,22 @@ As seguintes ferramentas foram usadas na construção do projeto:
 - [NextJS](https://nextjs.org/)
 - [JS-Cookie](https://github.com/js-cookie/js-cookie)
 
-## :camera: Screenshots {#LOOKING}
+## :camera: Screenshots <span id="LOOKING"></span>
+
+Primeiro Acesso:
+![initial](https://user-images.githubusercontent.com/36450847/111938870-ad81c080-8aa9-11eb-8cad-fcc90f96095d.jpg)
+
+Timer Iniciado:
+![abandon](https://user-images.githubusercontent.com/36450847/111938871-ae1a5700-8aa9-11eb-8967-e1bfa030b11b.jpg)
+
+Ciclo completo:
+![conclude](https://user-images.githubusercontent.com/36450847/111938874-aeb2ed80-8aa9-11eb-899e-4f5e8f50f223.jpg)
+
+Level Up:
+![levelup](https://user-images.githubusercontent.com/36450847/111938875-aeb2ed80-8aa9-11eb-9d61-3aee8be3d38f.jpg)
 
 ## [:eyes: Demonstração](https://move-it-lac.vercel.app/)
-
-## :electric_plug: Pré-requisitos {#CLONE}
+## :electric_plug: Pré-requisitos <span id="CLONE"></span>
 
 Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
 
@@ -73,17 +84,18 @@ npm run dev
 Ao finalizar você deverá abrir o seu navegador no seguinte url:
 - [localhost:3000](http://localhost:3000)
 
-## :balance_scale: Licença {#LICENSE}
+## :balance_scale: Licença <span id="LICENSE"></span>
 
 Este projeto está sob a Licença MIT. Leia a [LICENÇA](LICENSE) para mais informações.
 
-# :boy: Autor {#AUTHOR}
-<div style="text-align: center">
+# :boy: Autor <span id="AUTHOR"></span>
+
+<span>
   <p>
     <img
       alt="Autor - Ruan Moreira de Jesus"
       title="Ruan Moreira de Jesus"
-      style="border-radius: 50%; width: 100px"
+      width="100"
       src="http://github.com/ruanmoreiraofc.png">
   </p>
 
@@ -106,4 +118,4 @@ Este projeto está sob a Licença MIT. Leia a [LICENÇA](LICENSE) para mais info
       alt="Github - RuanMoreiraOfc"
       src="https://img.shields.io/github/followers/ruanmoreiraofc?style=social">
   </a>
-</div>
+</span>

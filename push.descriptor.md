@@ -3,12 +3,12 @@
 
 ### 🔧 Refactored Subjects
 
-* <NONE>
-    * None
+* <README>
+    * ADD SCREENSHOTS
 
 ### ➕ Features 
 
-*   [X] README
+*   [X] None
 
 ### 🚨 Fixed Bugs
 
