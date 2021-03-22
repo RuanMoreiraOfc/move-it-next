@@ -8,7 +8,7 @@
 
 ### ➕ Features 
 
-*   [X] License MIT
+*   [X] README
 
 ### 🚨 Fixed Bugs
 
