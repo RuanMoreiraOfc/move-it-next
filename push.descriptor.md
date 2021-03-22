@@ -3,14 +3,12 @@
 
 ### 🔧 Refactored Subjects
 
-* <COMPONENT-STYLE>
-    * Splitted Pulse Global Animation
-    * Level Up Modal
-    * Countdown Button Inner Details
+* <NONE>
+    * None
 
 ### ➕ Features 
 
-*   [X] Animated Level Up Modal
+*   [X] License MIT
 
 ### 🚨 Fixed Bugs
 
