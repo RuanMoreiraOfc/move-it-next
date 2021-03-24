@@ -60,7 +60,7 @@ It was used on development:
 #### Level Up:
 ![levelup](https://user-images.githubusercontent.com/36450847/111938875-aeb2ed80-8aa9-11eb-9d61-3aee8be3d38f.jpg)
 
-## [:eyes: Preview](https://move-it-lac.vercel.app/)
+## <a href="https://move-it-lac.vercel.app/" target=_blank>:eyes: Preview</a>
 
 ## :electric_plug: Requirements <span id="CLONE"></span>
 

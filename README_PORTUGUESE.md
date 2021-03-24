@@ -60,7 +60,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 #### Level Up:
 ![levelup](https://user-images.githubusercontent.com/36450847/111938875-aeb2ed80-8aa9-11eb-9d61-3aee8be3d38f.jpg)
 
-## [:eyes: Demonstração](https://move-it-lac.vercel.app/)
+## <a href="https://move-it-lac.vercel.app/" target=_blank>:eyes: Demonstração</a>
 ## :electric_plug: Pré-requisitos <span id="CLONE"></span>
 
 Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
