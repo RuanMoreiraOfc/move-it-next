@@ -1,0 +1,37 @@
+.container
+{
+    width: 100%;
+    height: 100%;
+
+    background-color: var(--color_blue);
+
+    display: flex;
+
+    justify-content: flex-end;
+    align-items: center;
+    
+    position: relative;
+    z-index: 0;
+}
+
+.container::before
+{
+    content: '';
+
+    position: absolute;
+
+    z-index: -1;
+
+    width: 100%;
+    height: 100%;
+
+    background-image: linear-gradient(
+        to top
+        , var(--color_blue_dark)
+        , transparent
+    );
+    mask-image: url(/icons/logo.svg);
+    mask-repeat: no-repeat;
+    mask-position: -4.75rem center;
+    mask-size: 48rem 41.25rem;
+}

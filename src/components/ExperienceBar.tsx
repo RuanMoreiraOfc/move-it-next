@@ -4,7 +4,7 @@ import styles from '../styles/components/ExperienceBar.module.css'
 
 import { EnumContext, ChallengesContext } from '../contexts/ChallengesContext';
 
-import { useEffect, useContext, CSSProperties } from "react";
+import { useEffect, useContext, CSSProperties, AnimationEvent } from "react";
 
 export function ExperienceBar() {
 	const {
@@ -110,14 +110,14 @@ export function ExperienceBar() {
 				<span
 					className={ styles.currentExperience }
 					style={ inlineMotionStyle }
-					onAnimationStart={ CreateCounter.bind(null) }
+					onAnimationStart={ CreateCounter }
 				>
 					{ currentExp } exp
 				</span>
 			</div>
 			<span
 				className={ `${styles.hasPulser} ${styles.onRender}` }
-				onAnimationEnd={ RemoverPosRender.bind(null) }
+				onAnimationEnd={ RemoverPosRender }
 				style={ inlineHighlightStyle }
 			>
 				{ getMaxProgress( level - Number(inContext(EnumContext.isLevelingUp)) ) } exp

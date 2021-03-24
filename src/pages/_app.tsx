@@ -1,4 +1,5 @@
-import '../styles/index.css';
+import '../styles/global.css';
+import '../styles/global.animations.css';
 
 function MyApp({ Component, pageProps }) {
   return (

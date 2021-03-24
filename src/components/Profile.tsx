@@ -1,6 +1,6 @@
 import styles from '../styles/components/Profile.module.css';
 
-import { useContext, CSSProperties } from 'react';
+import { useContext, CSSProperties, AnimationEvent } from 'react';
 import { EnumContext, ChallengesContext } from '../contexts/ChallengesContext';
 
 export function Profile() {
@@ -42,7 +42,7 @@ export function Profile() {
 					{ 'Level ' }
 					<span
 						className={ `${styles.hasPulser} ${styles.onRender}` }
-						onAnimationEnd={ RemoverPosRender.bind(null) }
+						onAnimationEnd={ RemoverPosRender }
 						style={ inlineHighlightStyle }
 					>
 						{level - Number( inContext(EnumContext.isLevelingUp) ) }

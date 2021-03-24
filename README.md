@@ -13,7 +13,7 @@
       <img src="https://img.shields.io/github/languages/count/ruanmoreiraofc/move-it-next?label=Languages&style=for-the-badge">
     </a>
     <a>
-      <img src="https://img.shields.io/github/last-commit/RuanMoreiraOfc/move-it-next/next-level?style=for-the-badge">
+      <img src="https://img.shields.io/github/last-commit/ruanmoreiraofc/move-it-next/next-level?style=for-the-badge">
     </a>
     <a href="#CLONE">
         <img src="https://img.shields.io/github/repo-size/ruanmoreiraofc/move-it-next?label=Last%20Git&style=for-the-badge">

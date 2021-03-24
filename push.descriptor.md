@@ -3,12 +3,16 @@
 ### 🔧 Refactored Subjects
 
 * \<README>
-    * REFINE
-* \<PUSH DESCRIPTOR>
+    * Lower Case URL
+* \<GLOBAL CSS>
+    * Box Shadow
+    * Full page percent ( My base )
+* \<EVENTS>
 
 ### ➕ Features 
 
-*   [X] None
+*   [X] Login Page ( VISUAL )
+*   [X] Vercel Rewrites
 
 ### 🚨 Fixed Bugs
 

@@ -7,7 +7,7 @@
 
     border-radius: 5px;
     background-color: var(--color_white);
-    box-shadow: 0 0 65px rgba(0, 0,0, 0.05);
+    box-shadow: var(--box_shadow);
 
     text-align: center;
 
