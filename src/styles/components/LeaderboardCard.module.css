@@ -1,0 +1,59 @@
+.container
+{
+    --color_card_bg: var(--color_white);
+}
+
+.highlight
+{
+    --color_card_bg: gold;
+}
+
+.container
+{
+    display: grid;
+    column-gap: 0.5rem;
+    grid-template-columns: 1fr 9fr;
+    box-shadow: var(--box_shadow);
+}
+
+.container > *
+{
+    height: 7rem;
+    
+    background-color: var(--color_card_bg);
+
+    display: grid;
+    place-items: center;
+}
+
+.index
+{
+    font-size: 2rem;
+}
+
+.dataContainer
+{
+    grid-template-columns: 9fr 3fr 2.5fr;
+}
+
+.dataContainer > *
+{
+    justify-self: start;
+}
+
+.dataContainer .user
+{
+    text-indent: 2.5rem;
+}
+
+.dataContainer .user > * >img:first-child
+{
+    margin-left: 2.5rem;
+    margin-right: -2.5rem;
+}
+
+.tasks > strong
+, .exp > strong
+{
+    color: var(--color_blue_dark);
+}

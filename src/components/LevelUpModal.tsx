@@ -5,14 +5,14 @@ import { ChallengesContext } from '../contexts/ChallengesContext';
 import { useContext } from 'react';
 
 export function LevelUpModal() {
-    const { level, CloseLevelUpModal } = useContext( ChallengesContext )
+    const { levelRaw: level, CloseLevelUpModal } = useContext( ChallengesContext )
 
-    // TODO: https://github.com/mathusummut/confetti.js
+    // TODO: Music Level Up
 
     return (
         <div className={ styles.overlay }>
             <div className={ styles.container } >
-                <header data-level={level} >{level}</header>
+                <header data-level={ level } >{level}</header>
 
                 <strong>Parabéns 🎉</strong>
                 <p>Você alcançou um novo level.</p>
@@ -24,5 +24,5 @@ export function LevelUpModal() {
                 </button>
             </div>
         </div>
-    )    
+    )
 }

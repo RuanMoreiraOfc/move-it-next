@@ -3,6 +3,7 @@
     z-index: 1;
     
     background: rgba(242, 243, 245, 0.6);
+    backdrop-filter: blur(5px);
 
     display: flex;
     justify-content: center;
@@ -19,6 +20,15 @@
     animation-fill-mode: forwards;
     animation-timing-function: ease-in-out;
 }
+
+@supports not ( (-webkit-backdrop-filter: none) or (backdrop-filter: none) ) {
+
+    .overlay
+    {
+        background-color: rgba(255, 255, 255, .95);
+    }
+
+  }
 
 .container
 {

@@ -3,8 +3,11 @@
     max-width: 26.25rem;
     width: 100%;
 
-    margin-right: 12.5rem;
-    /* margin-right: 20%; */
+    padding: 5rem 0;
+    padding: 2.75vmin 0;
+
+    margin-left: 13vw;
+    margin-right: min(12.5rem, 13vw);
 
     color: var(--color_text_highlight);
 
@@ -75,8 +78,10 @@
 
 .container input[type="text"]
 {
-    max-width: 21.25rem;
+    max-width: calc(100% - 5rem);
     padding-left: 1.875rem;
+
+    float: left;
 
     border-top-right-radius: initial;
     border-bottom-right-radius: initial;
@@ -116,6 +121,8 @@
 .container input[type="submit"]
 {
     max-width: 5rem;
+
+    float: right;
 
     border-top-left-radius: initial;
     border-bottom-left-radius: initial;

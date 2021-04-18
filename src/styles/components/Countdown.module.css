@@ -107,8 +107,6 @@
 
 .countdownButton > span.playIcon
 {
-    margin-top: 0;
-
     mask-image: url("/icons/play.svg");
 }
 
@@ -127,7 +125,6 @@
     background-color: var(--color_green);
 
     mask-image: url("/icons/done.svg");
-    mask-size: 1.1rem;
 
     animation: 
         play_conclude_countdown 0.1s 1s forwards ease-in-out

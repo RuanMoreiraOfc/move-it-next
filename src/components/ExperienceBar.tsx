@@ -10,16 +10,16 @@ export function ExperienceBar() {
 	const {
 		inContext
 		, experienceUpdatingTimerConfig: delayConfig
-		, level
+		, levelDelayed: level
 		, lastExperience: lastExp
 		, currentExperience: currentExp
-		, getExperienceToSpecificLevel: getMaxProgress
+		, getExperienceToNextLevel: getMaxProgress
 	} = useContext(ChallengesContext)
 
 	function getProgressPerCent(progressPoint: number) {
 		return Math.floor(progressPoint / getMaxProgress() * 100) + '%';
 	}
-	
+
 // #region DECLARATION
 
 	const startPoint = getProgressPerCent( lastExp );
@@ -41,7 +41,7 @@ export function ExperienceBar() {
 
 	const inlineMotionStyle = { animationDuration: `${ delayConfig.get.timer() }ms` } as CSSProperties;
 	const inlineHighlightStyle = { '--duration_on_render': `${ delayConfig.get.treatedTimer() }ms`, '--duration_pos_render': `${ delayConfig.get.treatedTimer(1 - maxDelayMultiplier) * 5 }ms` } as CSSProperties;
-	
+
 		for ( const prop in inlineProps )
 	inlineMotionStyle['--' + prop] = inlineProps[prop];
 
@@ -66,7 +66,7 @@ export function ExperienceBar() {
 	if ( inContext(EnumContext.isPosLevelingUp) || inContext(EnumContext.onGainExp) ) {
 		inlineMotionStyle.animationName = 'none';
 	}
-	
+
 // #endregion
 
 	function RemoverPosRender(event: AnimationEvent){
@@ -81,7 +81,7 @@ export function ExperienceBar() {
 				.join(' ')
 		);
 	}
-	
+
 // #region  DYNAMIC COUNTER( ONLY ON CHROMIUM SO FAR < chrome: 78 > )
 
 	function CreateCounter(event: AnimationEvent){

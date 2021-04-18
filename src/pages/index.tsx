@@ -1,26 +1,53 @@
 import styles from '../styles/pages/Home.module.css';
 
-import { CountdownContextProvider } from '../contexts/CountdownContext';
-import { ChallengesContextProvider } from "../contexts/ChallengesContext";
-
+import { useContext } from 'react';
 import { GetServerSideProps } from 'next';
+
+import axios from 'axios';
+import { ApiUrl } from './api/utils/request';
+import { ValidateToken } from './api/auth/github/validate';
+import { IGetData } from './api/database/mongo/get';
+
+import TokenAuthenticator from '../utils/HighOrderComponents/TokenAuthenticator';
+
+import { SessionContext } from '../contexts/SessionContext';
+import { CountdownContextProvider } from '../contexts/CountdownContext';
+import { IChallengesContextProviderProps, ChallengesContextProvider, EnumContext, ChallengesContext } from "../contexts/ChallengesContext";
+
 import Head from 'next/head';
-import { Profile } from '../components/Profile';
+
+import { NavSideBar } from '../components/NavSideBar';
 import { ExperienceBar } from '../components/ExperienceBar';
+import { Profile } from '../components/Profile';
 import { CompletedChallenges } from '../components/CompletedChallenges';
 import { Countdown } from '../components/Countdown';
 import { ChallengeBox } from '../components/ChallengeBox';
 
-interface HomeProps {
-  level: number;
-  currentExperience: number;
-  completedChallenges: number;
+interface IHomeProps extends IChallengesContextProviderProps {
+   error: 'Not Found' | "None";
 }
 
-export default function Home( props: HomeProps ) {
+function Home( {error, ...props}: IHomeProps ) {
+  const {
+    name
+    , login
+  } = useContext(SessionContext);
+
+  function ProfileUser() {
+    const {
+      levelDelayed: level
+      , inContext
+    } = useContext(ChallengesContext);
+
+    return <Profile { ...{name, login} } level={ level - Number( inContext(EnumContext.isLevelingUp) ) } />
+  }
+
+  // TODO: ERROR TREATMENT
+
   return (
     <ChallengesContextProvider {...props}>
-      <div className={styles.container}>
+      <NavSideBar />
+      <div className={ styles.container }>
         <Head>
           <title>Início | move-it</title>
         </Head>
@@ -29,7 +56,7 @@ export default function Home( props: HomeProps ) {
         <CountdownContextProvider>
           <section>
             <div>
-              <Profile />
+              <ProfileUser />
               <CompletedChallenges />
               <Countdown />
             </div>
@@ -43,15 +70,26 @@ export default function Home( props: HomeProps ) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async(ctx) =>
-{
-  const cookies = {...ctx.req.cookies}
-  const props = {} as HomeProps
+export default TokenAuthenticator(Home);
 
-    for( const value in cookies )
-  props[value] = Number(cookies[value])
-  
-  return({
-    props: {...props}
-  })
+export const getServerSideProps: GetServerSideProps = async ( {req} ) => {
+   const { token, token_type } = req.cookies;
+
+   const userLogin: string = ( await ValidateToken(token_type, token).catch( err => null ) )?.data?.login;
+
+   const url = ApiUrl(req, `/database/mongo/get/single?login=${userLogin}`);
+
+   const requestedData: IGetData[] = ( await axios.get(url).catch(err => null) )?.data;
+   if ( !requestedData ) return ({ props: {error: 'Not Found'} as IHomeProps });
+
+   const { level, exp: experienceTotal, tasks: completedChallenges } = requestedData[0];
+
+   return ({
+      props: {
+         error: 'None'
+         , level
+         , experienceTotal
+         , completedChallenges
+      } as IHomeProps
+   })
 }

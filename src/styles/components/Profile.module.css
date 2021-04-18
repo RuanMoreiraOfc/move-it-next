@@ -14,7 +14,6 @@
 .profileContainer > div
 {
     margin-left: 1.5rem;
-
 }
 
 .profileContainer > div > strong
@@ -33,16 +32,4 @@
 {
     font-size: 1rem;
     margin-top: 0.5rem;
-}
-
-span.hasPulser.onRender
-{
-    animation-duration: var(--duration_on_render);
-}
-
-span.hasPulser
-{
-    display: inline-block;
-    animation: var(--play_box_pulse), var(--play_text_pulse);
-    animation-duration: var(--duration_pos_render);
 }

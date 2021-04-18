@@ -1,0 +1,41 @@
+.container
+{
+    max-width: 992px;
+    max-width: max(992px, 72.5vw);
+    height: 100%;
+
+    margin: 0 auto;
+    margin-top: 2.5rem;
+}
+
+/* Specifics */
+
+.container h1
+{
+    
+    margin-bottom: 3.5rem;
+    
+    color: var(--color_title);
+}
+
+.grid header
+{
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    opacity: 0.5;
+}
+
+.grid
+{
+    padding-bottom: 0.75rem;
+
+    display: grid;
+    row-gap: 0.5rem;
+}
+
+.columns > *:not(html)
+{
+    height: unset;
+    background-color: unset;
+}

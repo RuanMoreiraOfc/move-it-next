@@ -1,0 +1,19 @@
+@charset "UTF-8";
+
+:root
+{
+    --color_white: #fff;
+    --color_red: #e83f5b;
+    --color_green: #4cd62b;
+    --color_blue: #5965e0;
+    --color_blue_dark: #4953b8;
+    --color_blue_dark_20: #4953b832;
+    --color_blue_twitter: #2aa9e0;
+    
+    --color_gray_line: #dcdde0;
+    --color_background: #f2f3f5;
+    
+    --color_title: #2e384d;
+    --color_text: #666;
+    --color_text_highlight: #b3b9ff;
+}

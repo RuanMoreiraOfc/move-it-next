@@ -1,52 +1,24 @@
 import styles from '../styles/components/Profile.module.css';
 
-import { useContext, CSSProperties, AnimationEvent } from 'react';
-import { EnumContext, ChallengesContext } from '../contexts/ChallengesContext';
+import { useContext } from 'react';
 
-export function Profile() {
-	const {
-		inContext
-		, level
-		, experienceUpdatingTimerConfig: delayConfig
-	} = useContext(ChallengesContext)
+import { SessionContext } from '../contexts/SessionContext';
 
-	const inlineHighlightStyle = {
-		'--duration_on_render': `${ delayConfig.get.treatedTimer() }ms`,
-		'--duration_pos_render': `${ delayConfig.get.treatedTimer(1 - delayConfig.get.multiplier() ) * 5 }ms`
-	} as CSSProperties;
+interface IProfileProps {
+	name: string;
+	login: string;
+	level: number;
+}
 
-	if ( inContext(EnumContext.isPosLevelingUp) ) {
-		inlineHighlightStyle.animationName = 'none';
-	}
-
-	function RemoverPosRender(event: AnimationEvent){
-		const target = event.target as HTMLElement;
-
-		if ( !target.className.includes( styles.onRender ) )
-	return;
-
-		target.className = (
-			Array.from(target.classList)
-				.filter( classItem => classItem != styles.onRender)
-				.join(' ')
-		);
-	}
-
+export function Profile( { name, login, level } : IProfileProps ) {
 	return (
-		<div className={styles.profileContainer}>
-			<img src="http://github.com/ruanmoreiraofc.png" alt="Ruan Moreira" />
+		<div className={ styles.profileContainer }>
+			<img src={ `http://github.com/${ login }.png` } alt={ `Foto de Perfil - ${login}` } />
 			<div>
-				<strong>Ruan Moreira</strong>
+				<strong>{ name }</strong>
 				<p>
-					<img src="icons/level.svg" alt="Level" />
-					{ 'Level ' }
-					<span
-						className={ `${styles.hasPulser} ${styles.onRender}` }
-						onAnimationEnd={ RemoverPosRender }
-						style={ inlineHighlightStyle }
-					>
-						{level - Number( inContext(EnumContext.isLevelingUp) ) }
-					</span>
+					<img src="/icons/level.svg" alt="Level" />
+					<span>{ "Level " + level }</span>
 				</p>
 			</div>
 		</div>

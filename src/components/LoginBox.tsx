@@ -1,13 +1,11 @@
 import styles from '../styles/components/LoginBox.module.css';
 
-import { MouseEvent } from 'react';
+import { FormEvent } from 'react';
+import { useRouter } from 'next/router';
 
 export function LoginBox() {
-    function ClickEvent(event: MouseEvent) {
-        event.preventDefault();
-        alert("TODO == GET https://github.com/login/oauth/authorize");
-    }
-
+    const router = useRouter();
+    
     return (
         <div className={styles.container} >
             <img src="/logo-full-white.svg" alt="Move-it Logo"/>
@@ -15,9 +13,18 @@ export function LoginBox() {
 
             <p>Faça login com seu Github para começar.</p>
 
-            <form action="" onClick={ ClickEvent }>
-                <input type="text" placeholder="Digite seu username" required/>
-                <input type="submit" value=" "/>
+            <form method="GET" action="/api/auth/github/login">
+                <input
+                    required
+                    type="text"
+                    name="username"
+                    placeholder="Digite seu username"
+                    defaultValue={ router.query.username }
+                />
+                <input
+                    type="submit"
+                    value=" "
+                />
             </form>
         </div>
     )

@@ -1,7 +1,7 @@
 .container
 {
     width: 100%;
-    height: 100%;
+    min-height: 100%;
 
     background-color: var(--color_blue);
 
@@ -34,4 +34,5 @@
     mask-repeat: no-repeat;
     mask-position: -4.75rem center;
     mask-size: 48rem 41.25rem;
+    mask-size: 50.75vmax 43.5vmax;
 }

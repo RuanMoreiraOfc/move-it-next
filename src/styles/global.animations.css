@@ -3,6 +3,7 @@
 :root
 {
     --play_fade_in: play_fade_in;
+
     --play_box_pulse: play_box_pulse;
     --play_text_pulse: play_text_pulse;
     --play_open_box_width-height: play_open_box_width-height;
@@ -18,6 +19,7 @@
     }
 }
 
+/* --- */
 
 @keyframes play_box_pulse
 {

@@ -6,7 +6,7 @@ interface ICountdownContextData {
     minutes: number;
     seconds: number;
 
-    hasFinished: boolean;    
+    hasFinished: boolean;
     isActive: boolean;
 
     // OnConclude: () => void;
@@ -21,11 +21,11 @@ interface ICountdownContextProviderProps {
 }
 
 export function CountdownContextProvider( { children }: ICountdownContextProviderProps ) {
-    
-    const { StartNewChallenge } = useContext(ChallengesContext)
-    
+
+   const { StartNewChallenge } = useContext(ChallengesContext)
+
 	const maxTimer = ( process.env.NODE_ENV === 'development' ) ? 0 : 25 * 60;
-    
+
 	const [timer, setTimer] = useState( maxTimer );
 	const [isActive, setIsActive] = useState( false );
 	const [hasFinished,  setHasFinished] = useState( false );
@@ -50,13 +50,13 @@ export function CountdownContextProvider( { children }: ICountdownContextProvide
 	}
 
     useEffect( () => {
-		
+
 		if ( isActive && timer === 0 )
-			caseCountdownConclude()			
-		
+			caseCountdownConclude()
+
 		else if ( isActive && timer > 0 )
 			caseCountdownNonConclude()
-			
+
 	}, [isActive, timer] )
 
     function caseCountdownConclude()
@@ -66,7 +66,7 @@ export function CountdownContextProvider( { children }: ICountdownContextProvide
 
         StartNewChallenge();
 	}
-	
+
 	function caseCountdownNonConclude()
 	{
 		countdownTimeout = setTimeout( setTimer.bind( null, timer - 1 ), 1000 );

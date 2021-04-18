@@ -9,16 +9,16 @@
 </p>
 
 <p align="center">
-    <a>
+    <a href="#">
       <img src="https://img.shields.io/github/languages/count/ruanmoreiraofc/move-it-next?label=Linguagens&style=for-the-badge">
     </a>
-    <a>
+    <a href="#">
       <img src="https://img.shields.io/github/last-commit/ruanmoreiraofc/move-it-next/next-level?label=%C3%9Altimo%20Commit&style=for-the-badge">
     </a>
     <a href="#CLONE">
         <img src="https://img.shields.io/github/repo-size/ruanmoreiraofc/move-it-next?label=%C3%9Altimo%20Git&style=for-the-badge">
     </a>
-    <a>
+    <a href="#">
       <img src="https://img.shields.io/github/languages/code-size/ruanmoreiraofc/move-it-next?label=C%C3%B3digo&style=for-the-badge">
     </a>
     <a href="#LICENSE">
@@ -31,44 +31,61 @@
 
 ## Sobre <span id="ABOUT"></span>
 
-<strong>Move-it</strong> foi criado com objetivo de ajudar pessoas que passam muito tempo na frente do computador, essa aplicação te dá tarefas como: alongamentos, exercícios para visão; para evitar doenças ou problemas relacionados.
+**Move-it** foi criado com objetivo de ajudar pessoas que passam muito tempo na frente do computador, essa aplicação te dá tarefas como: alongamentos, exercícios para visão; para evitar doenças ou problemas relacionados.
 
-Projeto feito durante o <strong>NLW#4(Next Level Week)</strong> com <a href="https://github.com/diego3g" title="CTO da Rocketseat" target=_blank><strong>Diego Fernandes</strong></a> na trilha de React.
+Projeto feito durante o **NLW#4(Next Level Week)** com **[Diego Fernandes](https://github.com/diego3g)** na trilha de React.
 
-Essa branch é o <strong>NEXT LEVEL</strong> desta aplicação.
+Essa branch é o **NEXT LEVEL** desta aplicação.
 
 ## :triangular_ruler: Tecnologia <span id="TECHNOLOGY"></span>
 
 As seguintes ferramentas foram usadas na construção do projeto:
 
-- <a href="https://www.typescriptlang.org" target=_blank>TypeScript</a>
-- <a href="https://reactjs.org" target=_blank>React</a>
-- <a href="https://nextjs.org" target=_blank>NextJS</a>
-- <a href="https://github.com/js-cookie/js-cookie" target=_blank>JS-Cookie</a>
+- [TypeScript](https://www.typescriptlang.org)
+- [React](https://reactjs.org)
+- [NextJS](https://nextjs.org)
+- [JS-Cookie](https://github.com/js-cookie/js-cookie)
+- [Cookie](https://github.com/jshttp/cookie)
+- [Axios](https://github.com/axios/axios)
+- [Cloud MongoDb](https://www.mongodb.com/cloud)
 
 ## :camera: Screenshots <span id="LOOKING"></span>
 
-#### Primeiro Acesso:
-![initial](https://user-images.githubusercontent.com/36450847/111938870-ad81c080-8aa9-11eb-8cad-fcc90f96095d.jpg)
+##### [Pular Screenshots](#CLONE)
 
-#### Timer Iniciado:
-![abandon](https://user-images.githubusercontent.com/36450847/111938871-ae1a5700-8aa9-11eb-8967-e1bfa030b11b.jpg)
+### Login:
+![login](https://user-images.githubusercontent.com/36450847/115162252-e39a6c00-a078-11eb-8305-fa335448e42a.jpg)
 
-#### Ciclo completo:
-![conclude](https://user-images.githubusercontent.com/36450847/111938874-aeb2ed80-8aa9-11eb-899e-4f5e8f50f223.jpg)
+### Login( Preenchido ):
+![loginfilled](https://user-images.githubusercontent.com/36450847/115162296-180e2800-a079-11eb-9b29-4d9eb4cab603.jpg)
 
-#### Level Up:
-![levelup](https://user-images.githubusercontent.com/36450847/111938875-aeb2ed80-8aa9-11eb-9d61-3aee8be3d38f.jpg)
+### Index:
+![initial](https://user-images.githubusercontent.com/36450847/115162206-961dff00-a078-11eb-95b7-a47efd18bcf8.jpg)
 
-## <a href="https://move-it-lac.vercel.app/" target=_blank>:eyes: Demonstração</a>
+### Timer Iniciado:
+![abandon](https://user-images.githubusercontent.com/36450847/115162220-acc45600-a078-11eb-95b9-3f7e549bdc2d.jpg)
+
+### Ciclo Concluído:
+![conclude](https://user-images.githubusercontent.com/36450847/115162224-b483fa80-a078-11eb-976f-7464ff36f5e6.jpg)
+
+### Level Up:
+![levelup](https://user-images.githubusercontent.com/36450847/115162235-c5cd0700-a078-11eb-9412-746d5e4b3d73.jpg)
+
+### Leaderboard:
+![leaderboardnonlogged](https://user-images.githubusercontent.com/36450847/115162262-f44ae200-a078-11eb-8393-1aa8a023cc70.jpg)
+
+### Leaderboard( Logado ):
+![leaderboard](https://user-images.githubusercontent.com/36450847/115162276-02006780-a079-11eb-846c-0e9e4b3b8c88.jpg)
+
+## [:eyes: Demonstração](https://move-it-lac.vercel.app/)
 ## :electric_plug: Pré-requisitos <span id="CLONE"></span>
 
 Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
 
-- <a href="https://git-scm.com" target=_blank>Git</a>
-- <a href="https://nodejs.org/en" target=_blank>Node.js</a>
+- [Git](https://git-scm.com)
+- [Node.js](https://nodejs.org)
 
-Além disto é bom ter um editor para trabalhar com o código como <a href="https://code.visualstudio.com" target=_blank>VSCode</a>.
+Além disto é bom ter um editor para trabalhar com o código como [VSCode.](https://code.visualstudio.com)
 
 ## :bulb: Faça você mesmo
 
@@ -83,7 +100,10 @@ cd move-it-next
 npm install
 ```
 
-Com as dependências instaladas, rode a aplicação.
+Com as dependências instaladas, crie um arquivo .env como o deste [exemplo.](.env.template)
+
+
+Agora rode a aplicação.
 
 ```bash
 # para rodar o projeto
@@ -91,7 +111,7 @@ npm run dev
 ```
 
 Ao finalizar você deverá abrir o seu navegador no seguinte url:
-- <a href="http://localhost:3000" target=_blank>localhost:3000</a>
+- [localhost:3000](http://localhost:3000)
 
 ## :balance_scale: Licença <span id="LICENSE"></span>
 

@@ -1,5 +1,5 @@
 {
     "rewrites": [
-        { "source": "/", "destination": "/login" }
+        { "source": "/api/database/mongo/get", "destination": "/api/database/mongo/get/all" }
     ]
 }
