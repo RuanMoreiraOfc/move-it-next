@@ -50,6 +50,8 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 ## :camera: Screenshots <span id="LOOKING"></span>
 
+##### [Pular Screenshots](#CLONE)
+
 #### Primeiro Acesso:
 ![initial](https://user-images.githubusercontent.com/36450847/111938870-ad81c080-8aa9-11eb-8cad-fcc90f96095d.jpg)
 

@@ -50,6 +50,8 @@ It was used on development:
 
 ## :camera: Screenshots <span id="LOOKING"></span>
 
+##### [Skip Screenshots](#CLONE)
+
 #### First Look:
 ![initial](https://user-images.githubusercontent.com/36450847/111938870-ad81c080-8aa9-11eb-8cad-fcc90f96095d.jpg)
 
