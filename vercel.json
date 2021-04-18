@@ -1,9 +1,5 @@
 {
     "rewrites": [
-<<<<<<< HEAD
         { "source": "/api/database/mongo/get", "destination": "/api/database/mongo/get/all" }
-=======
-        { "source": "/", "destination": "/" }
->>>>>>> 75685888d8aecf91574568cc99c9edb3aee1af63
     ]
 }
