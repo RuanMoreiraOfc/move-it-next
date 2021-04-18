@@ -77,7 +77,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 ### Leaderboard( Logado ):
 ![leaderboard](https://user-images.githubusercontent.com/36450847/115162276-02006780-a079-11eb-846c-0e9e4b3b8c88.jpg)
 
-## [:eyes: Demonstração](https://move-it-lac.vercel.app/)
+## [:eyes: Demonstração](https://move-it-ruanmoreiraofc.vercel.app/)
 ## :electric_plug: Pré-requisitos <span id="CLONE"></span>
 
 Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:

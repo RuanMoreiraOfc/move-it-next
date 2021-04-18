@@ -77,7 +77,7 @@ It was used on development:
 ### Leaderboard( Logged ):
 ![leaderboard](https://user-images.githubusercontent.com/36450847/115162276-02006780-a079-11eb-846c-0e9e4b3b8c88.jpg)
 
-## [:eyes: Preview](https://move-it-lac.vercel.app/)
+## [:eyes: Preview](https://move-it-ruanmoreiraofc.vercel.app/)
 
 ## :electric_plug: Requirements <span id="CLONE"></span>
 
