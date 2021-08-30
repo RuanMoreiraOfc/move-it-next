@@ -1,31 +1,37 @@
-import { useState, useEffect, createContext, ReactNode } from "react";
+import { createContext, ReactNode } from 'react';
 
-export interface ISessionContextData {
-    isLogged: boolean;
-    name: string;
-    login: string;
-}
+export { SessionContext };
+export default SessionContextProvider;
 
-export const SessionContext = createContext( {} as ISessionContextData );
+type SessionContextDataType = {
+   isLogged: boolean;
+   name: string;
+   login: string;
+};
 
-interface ISessionContextProviderProps {
-    children: ReactNode;
-}
+const SessionContext = createContext({} as SessionContextDataType);
 
-export default function SessionContextProvider( { children, ...initiator }: ISessionContextData & ISessionContextProviderProps ) {
-    // const [name, setName] = useState( initiator.name );
-    // const [login, setLogin] = useState( initiator.login );
-    const isLogged = Boolean( initiator.login );
-    const name = initiator.name;
-    const login = initiator.login;
+type ISessionContextProviderProps = {
+   children: ReactNode;
+} & SessionContextDataType;
 
-    return (
-        <SessionContext.Provider value={{
-            isLogged
-            , name
-            , login
-        }}>
-            { children }
-        </SessionContext.Provider>
-    )
+function SessionContextProvider({
+   children,
+   ...initiator
+}: ISessionContextProviderProps) {
+   const isLogged = Boolean(initiator.login);
+   const name = initiator.name;
+   const login = initiator.login;
+
+   return (
+      <SessionContext.Provider
+         value={{
+            isLogged,
+            name,
+            login,
+         }}
+      >
+         {children}
+      </SessionContext.Provider>
+   );
 }

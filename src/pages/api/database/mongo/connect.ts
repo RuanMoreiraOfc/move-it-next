@@ -1,47 +1,43 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-
-// import { ResponseDealer } from '../../utils/response';
-// import { IVerifyRequestAcceptedBody } from '../../utils/verifyRequest';
-import { ResponseDealer } from '../../utils/response';
-
-import url from "url";
-
+import url from 'url';
 import { MongoClient, Db } from 'mongodb';
+
+import { ResponseDealer } from '@sf-utils/response';
+
+export { GetCurrentDbColleciton };
+export default null;
 
 let cachedDb: Db = null;
 
 async function ConnectToDb() {
-    if ( cachedDb ) {
-        return cachedDb;
-    }
+  if (cachedDb) {
+    return cachedDb;
+  }
 
-    const { MONGODB_URI: uri } = process.env;
+  const { MONGODB_URI: uri } = process.env;
 
-    const client = await MongoClient.connect( uri, {
-        useNewUrlParser: true
-        , useUnifiedTopology: true
-    } );
+  const client = await MongoClient.connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
 
-    const dbName = url.parse(uri).pathname.slice(1);
-    const db = client.db(dbName);
+  const dbName = url.parse(uri).pathname.slice(1);
+  const db = client.db(dbName);
 
-    cachedDb = db;
+  cachedDb = db;
 
-    return db;
+  return db;
 }
 
-export async function GetCurrentDbColleciton() {
-    const { MONGODB_COLLECTION } = process.env;
+async function GetCurrentDbColleciton() {
+  const { MONGODB_COLLECTION } = process.env;
 
-    const db = await ConnectToDb();
+  const db = await ConnectToDb();
 
-    if ( db === null ) {
-        return new Error( 'Database is out of service for now!' );
-    }
+  if (db === null) {
+    return new Error('Database is out of service for now!');
+  }
 
-    const collection = db.collection( MONGODB_COLLECTION );
+  const collection = db.collection(MONGODB_COLLECTION);
 
-    return collection;
+  return collection;
 }
-
-export default null;

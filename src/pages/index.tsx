@@ -1,95 +1,133 @@
-import styles from '../styles/pages/Home.module.css';
+import styles from '@st-pages/Home.module.css';
 
-import { useContext } from 'react';
-import { GetServerSideProps } from 'next';
+import type { GetServerSideProps, GetServerSidePropsResult } from 'next';
+import type { ComponentProps } from 'react';
 
-import axios from 'axios';
-import { ApiUrl } from './api/utils/request';
-import { ValidateToken } from './api/auth/github/validate';
-import { IGetData } from './api/database/mongo/get';
+import api from '@services/api';
+import { SetResponseCookies } from '@sf-utils/response';
+import { ValidateToken } from '@sf-auth/github/validate';
+import { GetDataType } from '@sf-database/mongo/get';
 
 import TokenAuthenticator from '../utils/HighOrderComponents/TokenAuthenticator';
 
-import { SessionContext } from '../contexts/SessionContext';
-import { CountdownContextProvider } from '../contexts/CountdownContext';
-import { IChallengesContextProviderProps, ChallengesContextProvider, EnumContext, ChallengesContext } from "../contexts/ChallengesContext";
+import useSession from '@hooks/useSession';
+import useChallenges from '@hooks/useChallenges';
+
+import CountdownContextProvider from '@contexts/CountdownContext';
+import ChallengesContextProvider from '@contexts/ChallengesContext';
 
 import Head from 'next/head';
 
-import { NavSideBar } from '../components/NavSideBar';
-import { ExperienceBar } from '../components/ExperienceBar';
-import { Profile } from '../components/Profile';
-import { CompletedChallenges } from '../components/CompletedChallenges';
-import { Countdown } from '../components/Countdown';
-import { ChallengeBox } from '../components/ChallengeBox';
+import NavSideBar from '@components/NavSideBar';
+import ExperienceBar from '@components/ExperienceBar';
+import Profile from '@components/Profile';
+import CompletedChallenges from '@components/CompletedChallenges';
+import Countdown from '@components/Countdown';
+import ChallengeBox from '@components/ChallengeBox';
 
-interface IHomeProps extends IChallengesContextProviderProps {
-   error: 'Not Found' | "None";
-}
-
-function Home( {error, ...props}: IHomeProps ) {
-  const {
-    name
-    , login
-  } = useContext(SessionContext);
-
-  function ProfileUser() {
-    const {
-      levelDelayed: level
-      , inContext
-    } = useContext(ChallengesContext);
-
-    return <Profile { ...{name, login} } level={ level - Number( inContext(EnumContext.isLevelingUp) ) } />
-  }
-
-  // TODO: ERROR TREATMENT
-
-  return (
-    <ChallengesContextProvider {...props}>
-      <NavSideBar />
-      <div className={ styles.container }>
-        <Head>
-          <title>Início | move-it</title>
-        </Head>
-        <ExperienceBar />
-
-        <CountdownContextProvider>
-          <section>
-            <div>
-              <ProfileUser />
-              <CompletedChallenges />
-              <Countdown />
-            </div>
-            <div>
-              <ChallengeBox />
-            </div>
-          </section>
-        </CountdownContextProvider>
-      </div>
-    </ChallengesContextProvider>
-  )
-}
-
+export { getServerSideProps };
 export default TokenAuthenticator(Home);
 
-export const getServerSideProps: GetServerSideProps = async ( {req} ) => {
-   const { token, token_type } = req.cookies;
+type HomeProps = Pick<
+   ComponentProps<typeof ChallengesContextProvider>,
+   'level' | 'completedChallenges' | 'experienceTotal'
+>;
 
-   const userLogin: string = ( await ValidateToken(token_type, token).catch( err => null ) )?.data?.login;
+function Home(props: HomeProps) {
+   return (
+      <ChallengesContextProvider {...props}>
+         <div className={styles.container}>
+            <Head>
+               <title>Início | move-it</title>
+            </Head>
+            <ExperienceBar />
 
-   const url = ApiUrl(req, `/database/mongo/get/single?login=${userLogin}`);
-
-   const requestedData: IGetData[] = ( await axios.get(url).catch(err => null) )?.data;
-   if ( !requestedData ) return ({ props: {error: 'Not Found'} as IHomeProps });
-
-   const { level, exp: experienceTotal, tasks: completedChallenges } = requestedData[0];
-
-   return ({
-      props: {
-         error: 'None'
-         , level
-         , experienceTotal
-         , completedChallenges
-      } as IHomeProps
-   })
+            <CountdownContextProvider>
+               <section>
+                  <div>
+                     <ProfileUser />
+                     <CompletedChallenges />
+                     <Countdown />
+                  </div>
+                  <div>
+                     <ChallengeBox />
+                  </div>
+               </section>
+            </CountdownContextProvider>
+         </div>
+      </ChallengesContextProvider>
+   );
 }
+
+// #region Sub Components
+
+function ProfileUser() {
+   const { name, login } = useSession();
+
+   const { levelDelayed: level, inContext } = useChallenges();
+
+   // ***
+
+   return (
+      <Profile
+         {...{ name, login }}
+         level={level - Number(inContext('isLevelingUp'))}
+      />
+   );
+}
+
+// #endregion Sub Components
+
+const getServerSideProps: GetServerSideProps = async ({
+   res: response,
+   req: { cookies },
+}) => {
+   const { token, token_type } = cookies;
+
+   function DataNotFoundCase(cenario: string) {
+      SetResponseCookies('strict')(response)([
+         { token: '' },
+         { token_type: '' },
+      ]);
+      return {
+         redirect: {
+            statusCode: 307,
+            destination: `/login?redirect=${cenario}`,
+         },
+      } as GetServerSidePropsResult<HomeProps>;
+   }
+
+   const login: string = (
+      (await ValidateToken(token_type, token).catch(console.log)) || null
+   )?.data?.login;
+
+   if (!login) {
+      return DataNotFoundCase('invalid');
+   }
+
+   const requestedData: GetDataType = (
+      (await api
+         .get('/database/mongo/get/single', {
+            params: { login },
+         })
+         .catch(console.log)) || null
+   )?.data?.[0];
+
+   if (!requestedData) {
+      return DataNotFoundCase('database');
+   }
+
+   const {
+      level,
+      exp: experienceTotal,
+      tasks: completedChallenges,
+   } = requestedData;
+
+   return {
+      props: {
+         level,
+         experienceTotal,
+         completedChallenges,
+      } as HomeProps,
+   };
+};

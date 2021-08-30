@@ -1,79 +1,105 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
-import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
-import { ApiUrl } from '../../utils/request';
-import { SetResponseCookies } from '../../utils/response';
-import { IAddBody } from '../../database/mongo/add';
+import type { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+import axios from 'axios';
 
-export async function ValidateToken( tokenType: string, token: string ) {
+import api from '@services/api';
+import { SetResponseCookies } from '@sf-utils/response';
+import type { AddBodyType } from '@sf-database/mongo/add';
 
-    if ( !token || !tokenType ) {
-        throw new Error( 'Token or Token Type is not defined!' )
-    }
-
-    const authHeader: AxiosRequestConfig = { headers: {
-        'Authorization': `${tokenType} ${ token }`
-    } }
-
-    const requestedData: AxiosResponse = await axios.get('https://api.github.com/user', authHeader).catch( err => null );
-
-    return requestedData;
-
-}
+export default sf_validate;
+export { ValidateToken };
 
 // ---- STEP 3
-export default async function Validate(request: NextApiRequest, response: NextApiResponse) {
 
-    const { env: environment } = process;
-    const { query, cookies } = request;
+async function sf_validate(request: NextApiRequest, response: NextApiResponse) {
+  const { env: environment } = process;
+  const { query, cookies } = request;
 
-    /* ---- REQUEST VALIDATION */ {
+  /* ---- REQUEST VALIDATION */ {
+    const { GITHUB_STATE: state } = environment;
+    const { state: stateParam } = query;
 
-        const { GITHUB_STATE: state } = environment;
-        const { state: stateParam } = query;
+    if (stateParam !== state) {
+      response.status(403).redirect(`/login?redirect=${'unsafe'}`).end();
+      return;
+    }
+  }
 
-        if ( stateParam !== state ) {
-            response.status(403).redirect(`/login?redirect=${"unsafe"}`).end();
-            return;
-        }
+  /* ---- ADD TO DATABASE */ {
+    const { token, token_type } = cookies;
 
+    const validatedData: AxiosResponse =
+      (await ValidateToken(token_type, token).catch(console.log)) || null;
+
+    if (!validatedData) {
+      response.status(401).redirect(`/login?redirect=${'database'}`).end();
+      return;
     }
 
-    /* ---- ADD TO DATABASE */ {
+    const { login, name } = validatedData.data;
 
-        const { token, token_type } = cookies;
-
-        const validatedData: AxiosResponse = await ValidateToken( token_type, token ).catch( err => null );
-
-        if ( !validatedData ) {
-            response.status(401).redirect(`/login?redirect=${"database"}`).end();
-            return;
+    const { status } = await api
+      .post('/database/mongo/add', {
+        login,
+        name,
+        level: 1,
+        tasks: 0,
+        exp: 0,
+      } as AddBodyType)
+      .catch((error: AxiosError) => {
+        if (error.response.status !== 406) {
+          console.log(error);
+          return { status: error.response.status || 404 };
         }
 
-        const postAddUrl = ApiUrl( request, '/database/mongo/add' );
+        return null;
+      });
 
-        const { login, name } = validatedData.data;
-
-        const { status } = await axios.post( postAddUrl, {
-            login
-            , name
-            , level: 1
-            , tasks: 0
-            , exp: 0
-        } as IAddBody ).catch( ( error: AxiosError ) => ({status: error.response.status}) );
-
-        if ( status !== 201 ) if ( status !== 406 ) {
-            SetResponseCookies( 'lax' )(response)( [ {token: ''}, {token_type: ''} ] );
-
-            response.status(401).redirect(`/login?redirect=${"database"}`).end();
-            return;
-        }
-
-        SetResponseCookies( 'strict' )(response)( [ {token}, {token_type} ] );
-
+    if (!status) {
+      response.status(200).redirect('/').end();
+      return;
     }
 
-    response.status(201).redirect('/').end();
-    return;
+    if (status >= 400) {
+      if (status !== 401) {
+        response
+          .status(404)
+          .redirect(`/login?redirect=${`generic-${status}`}`)
+          .end();
+        return;
+      }
 
+      SetResponseCookies('strict')(response)([
+        { token: '' },
+        { token_type: '' },
+      ]);
+
+      response.status(401).redirect(`/login?redirect=${'database'}`).end();
+      return;
+    }
+
+    SetResponseCookies('strict')(response)([{ token }, { token_type }]);
+  }
+
+  response.status(201).redirect('/').end();
+  return;
+}
+
+async function ValidateToken(tokenType: string, token: string) {
+  if (!token || !tokenType) {
+    throw new Error('Token or Token Type is not defined!');
+  }
+
+  const authHeader: AxiosRequestConfig = {
+    headers: {
+      Authorization: `${tokenType} ${token}`,
+    },
+  };
+
+  const requestedData: AxiosResponse = await axios
+    .get('https://api.github.com/user', authHeader)
+    .catch((err) => null);
+
+  return requestedData;
 }

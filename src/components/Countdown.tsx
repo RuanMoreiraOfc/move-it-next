@@ -1,86 +1,89 @@
-import styles from '../styles/components/Countdown.module.css';
+import styles from '@st-components/Countdown.module.css';
 
-import { CountdownContext } from '../contexts/CountdownContext';
+import useCountdown from '@hooks/useCountdown';
 
-import { useState, useEffect, useContext } from 'react';
+export default Countdown;
 
-export function Countdown() {
-	const { hasFinished, isActive, minutes, seconds, StartCountdown, ResetCountdown } = useContext(CountdownContext)
+function Countdown() {
+   const {
+      hasFinished,
+      isActive,
+      minutes,
+      seconds,
+      StartCountdown,
+      ResetCountdown,
+   } = useCountdown();
 
-	const [minuteLeft, minuteRight] = minutes.toString().padStart(2, '0').split('');
-	const [secondLeft, secondRight] = seconds.toString().padStart(2, '0').split('');
+   const [minuteLeft, minuteRight] = minutes
+      .toString()
+      .padStart(2, '0')
+      .split('');
+   const [secondLeft, secondRight] = seconds
+      .toString()
+      .padStart(2, '0')
+      .split('');
 
-	//
+   //
 
-	interface IButtonBaseProps
-	{
-		disabled?: boolean;
-		onClick?: (event?) => void;
+   interface IButtonBaseProps {
+      disabled?: boolean;
+      onClick?: (event?) => void;
 
-		extraClassName?: string;
+      className?: string;
 
-		textChildren: string;
-		imageChildren: string;
-	}
+      icon: string;
+      children: string;
+   }
 
-	function ButtonBase( props: IButtonBaseProps )
-	{
-		return (
-			<button
-				onClick={ props.onClick }
-				type='button'
-				disabled={ props.disabled || false }
-				className={ `${styles.countdownButton} ${props.extraClassName || '' }` }
-			>
-				{ props.textChildren }
-				<span className={styles[props.imageChildren + 'Icon']}/>
-			</button>
-		)
-	}
-	
-	return (
-		<div>
-			<div className={styles.countdownContainer}>
-				<div>
-					<span>{minuteLeft}</span>
-					<span>{minuteRight}</span>
-				</div>
-				<span>:</span>
-				<div>
-					<span>{secondLeft}</span>
-					<span>{secondRight}</span>
-				</div>
-			</div>
+   function ButtonBase({
+      className = '',
+      children,
+      icon,
+      ...buttonProps
+   }: IButtonBaseProps) {
+      return (
+         <button
+            type='button'
+            className={`${styles.countdownButton} ${className}`.trimEnd()}
+            {...buttonProps}
+         >
+            {children}
+            <span className={styles[`${icon}Icon`]} />
+         </button>
+      );
+   }
 
-			{ hasFinished ? (
+   return (
+      <div>
+         <div className={styles.countdownContainer}>
+            <div>
+               <span>{minuteLeft}</span>
+               <span>{minuteRight}</span>
+            </div>
+            <span>:</span>
+            <div>
+               <span>{secondLeft}</span>
+               <span>{secondRight}</span>
+            </div>
+         </div>
 
-				ButtonBase( {
-					disabled: true,
-					textChildren: 'Ciclo Encerrado',
-					imageChildren: 'done'
-				} )
-
-			) : (
-				!isActive ? (
-
-					ButtonBase( {
-						onClick: StartCountdown,
-						textChildren: 'Iniciar Ciclo',
-						imageChildren: 'play'
-					} )
-	
-				) : (
-
-					ButtonBase( {
-						onClick: ResetCountdown,
-						extraClassName: styles.countdownButtonActive,
-						textChildren: 'Abandonar Ciclo',
-						imageChildren: 'close'
-					} )
-					
-				)
-			) }
-
-		</div>
-	)
+         {hasFinished ? (
+            <ButtonBase icon='done' disabled>
+               Ciclo Encerrado
+            </ButtonBase>
+         ) : !isActive ? (
+            <ButtonBase icon='play' onClick={StartCountdown}>
+               Iniciar Ciclo
+            </ButtonBase>
+         ) : (
+            <ButtonBase
+               className={styles.countdownButtonActive}
+               icon='close'
+               onClick={ResetCountdown}
+            >
+               Abandonar Ciclo
+            </ButtonBase>
+         )}
+      </div>
+   );
 }

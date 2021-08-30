@@ -1,0 +1,12 @@
+.wrapper {
+    height: 100%;
+
+    padding-left: 7rem;
+
+    display: flex;
+    align-items: center;
+}
+
+.noWrapper {
+    height: 100%;
+}

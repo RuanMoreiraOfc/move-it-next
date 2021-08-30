@@ -1,11 +1,10 @@
 .container
 {
-    max-width: 992px;
-    max-width: max(992px, 72.5vw);
+    width: 80%;
     height: 100%;
 
     margin: 0 auto;
-    margin-top: 2.5rem;
+    padding-top: 2.5rem;
 }
 
 /* Specifics */

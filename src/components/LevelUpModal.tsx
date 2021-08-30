@@ -1,28 +1,25 @@
-import styles from '../styles/components/LevelUpModal.module.css';
+import styles from '@st-components/LevelUpModal.module.css';
 
-import { ChallengesContext } from '../contexts/ChallengesContext';
+import useChallenges from '@hooks/useChallenges';
 
-import { useContext } from 'react';
+export default LevelUpModal;
 
-export function LevelUpModal() {
-    const { levelRaw: level, CloseLevelUpModal } = useContext( ChallengesContext )
+function LevelUpModal() {
+   const { levelRaw: level, CloseLevelUpModal } = useChallenges();
 
-    // TODO: Music Level Up
+   // TODO: Music Level Up
 
-    return (
-        <div className={ styles.overlay }>
-            <div className={ styles.container } >
-                <header data-level={ level } >{level}</header>
+   return (
+      <div className={styles.overlay}>
+         <div className={styles.container}>
+            <header data-level={level}>{level}</header>
 
-                <strong>Parabéns 🎉</strong>
-                <p>Você alcançou um novo level.</p>
-                <button
-                    type="button"
-                    onClick={ CloseLevelUpModal }
-                >
-                    <img src="/icons/close.svg" alt="Fechar modal" />
-                </button>
-            </div>
-        </div>
-    )
+            <strong>Parabéns 🎉</strong>
+            <p>Você alcançou um novo level.</p>
+            <button type='button' onClick={CloseLevelUpModal}>
+               <img src='/icons/close.svg' alt='Fechar modal' />
+            </button>
+         </div>
+      </div>
+   );
 }

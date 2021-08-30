@@ -1,88 +1,102 @@
-// @collapse
+import type { ComponentProps, ElementType } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
-import { ElementType, useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import Cookies from 'js-cookie';
 
-import { ValidateToken } from "../../pages/api/auth/github/validate";
+import { ValidateToken } from '@sf-auth/github/validate';
 
-import SessionContextProvider, { ISessionContextData } from "../../contexts/SessionContext";
+import SessionContextProvider from '@contexts/SessionContext';
 
-import { LoadingAnimation } from "./components/LoadingAnimation";
+import LoadingAnimation from '@u-hoc-components/LoadingAnimation';
 
-import Cookies from "js-cookie";
+export default TokenAuthenticator;
 
-export default function TokenAuthenticator( Component: ElementType, mustHaveValidToken: boolean = true) {
-	function Wrap( props: unknown ) {
-		const router = useRouter();
+type SessionContextDataType = Pick<
+   ComponentProps<typeof SessionContextProvider>,
+   'name' | 'login' | 'isLogged'
+>;
 
-		const [hasAccess, setHasAccess] = useState( false );
-		const [sessionProps, setSessionProps] = useState({} as ISessionContextData);
+function TokenAuthenticator(
+   Component: ElementType,
+   mustHaveValidToken: boolean = true,
+) {
+   function Wrap(props: unknown) {
+      const router = useRouter();
 
-		async function ValidateAcess() {
+      const [hasAccess, setHasAccess] = useState(false);
+      const [sessionProps, setSessionProps] = useState(
+         {} as SessionContextDataType,
+      );
 
-			const token = Cookies.get('token');
-			const tokenType = Cookies.get('token_type');
+      async function ValidateAcess() {
+         const token = Cookies.get('token');
+         const tokenType = Cookies.get('token_type');
 
-			const hasToken = Boolean(token);
+         const hasToken = Boolean(token);
 
-			const IsLoginPage = () => router.pathname === '/login';
+         const IsLoginPage = () => router.pathname === '/login';
 
-			/* ---- NO TOKEN TEST */ {
+         /* ---- NO TOKEN TEST */ {
+            if (!hasToken)
+               if (mustHaveValidToken) {
+                  router.replace(`/login?redirect=${'need_auth'}`);
+                  return;
+               }
 
-				if ( !hasToken ) if ( mustHaveValidToken ) {
-					router.replace(`/login?redirect=${"need_auth"}`);
-					return;
-				}
+            if (!hasToken) {
+               setHasAccess(true);
+               return;
+            }
+         }
 
-				if ( !hasToken ) {
-					setHasAccess(true);
-					return;
-				}
+         /* ---- INTERNET SAVER */ if (sessionProps.isLogged) {
+            setHasAccess(true);
+            return;
+         }
 
-			}
+         // ---- REQUEST
+         const requestedData =
+            (await ValidateToken(tokenType, token).catch(console.log)) || null;
 
-			// ---- REQUEST
-			const requestedData = await ValidateToken( tokenType, token ).catch( err => null );
+         /* ---- TOKEN TEST */ {
+            const tokenIsValid = Boolean(requestedData);
 
-			/* ---- TOKEN TEST */ {
+            if (!tokenIsValid)
+               if (mustHaveValidToken) {
+                  router.replace(`/login?redirect=${'denied'}`);
+                  return;
+               }
 
-				const tokenIsValid = Boolean( requestedData );
+            if (tokenIsValid)
+               if (!IsLoginPage()) {
+                  setSessionProps(requestedData.data as SessionContextDataType);
+               }
 
-				if ( !tokenIsValid ) if ( mustHaveValidToken ) {
-					router.replace(`/login?redirect=${"denied"}`);
-					return;
-				}
+            setHasAccess(true);
 
-				if ( tokenIsValid ) if ( !IsLoginPage() ) {
-					setSessionProps( requestedData.data as ISessionContextData );
-				}
+            if (IsLoginPage()) {
+               if (tokenIsValid) {
+                  router.replace('/');
+                  return;
+               }
 
-				setHasAccess(true);
+               router.replace(`/login?redirect=${'invalid'}`);
+            }
+         }
+      }
 
-				if ( IsLoginPage() ) {
+      useEffect(ValidateAcess as () => void, []);
 
-					if ( tokenIsValid ) {
-						router.replace('/');
-						return;
-					}
+      return hasAccess ? (
+         <SessionContextProvider
+            {...sessionProps}
+            children={<Component {...props} />}
+         />
+      ) : (
+         <LoadingAnimation />
+      );
+   }
 
-					router.replace(`/login?redirect=${"invalid"}`);
-
-				}
-
-			}
-		}
-
-		useEffect( ValidateAcess as () => void , []);
-
-		return (
-			!hasAccess ? (
-				<LoadingAnimation />
-			) : (
-				<SessionContextProvider {...sessionProps} children={ <Component {...props} /> } />
-			)
-		)
-	}
-
-	return Wrap;
+   return Wrap;
 }
