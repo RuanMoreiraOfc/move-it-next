@@ -53,7 +53,7 @@ async function sf_validate(request: NextApiRequest, response: NextApiResponse) {
           return { status: error.response.status || 404 };
         }
 
-        return null;
+        return {};
       });
 
     if (!status) {
