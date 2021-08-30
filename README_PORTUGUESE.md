@@ -152,13 +152,13 @@ Este projeto está sob a Licença MIT. Leia a [LICENÇA][btn-license] para mais 
 [author-card-discord]: https://img.shields.io/badge/Discord--$?style=social&logo=discord
 [author-card-github]: https://img.shields.io/github/followers/ruanmoreiraofc?style=social
 
-[author-btn-email]: mailto:ruanmoreiraofc@hotmail.com "Get in touch!"
+[author-btn-email]: mailto:ruanmoreiraofc@hotmail.com "Entre em contato!"
 [author-btn-discord]: #RuanMoreiraOfc#7904 "RuanMoreiraOfc#7904"
-[author-btn-github]: https://github.com/ruanmoreiraofc "Github Profile"
+[author-btn-github]: https://github.com/ruanmoreiraofc "Meu Github"
 
 <!-- *** LANGUAGES README *** -->
-[lang-en]: #
-[lang-pt]: README_PORTUGUESE.md
+[lang-en]: README.md
+[lang-pt]: #
 [lang-jp]: #
 
 <!-- *** INFO CARDS *** -->
