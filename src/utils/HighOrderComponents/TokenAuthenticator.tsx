@@ -62,16 +62,18 @@ function TokenAuthenticator(
          /* ---- TOKEN TEST */ {
             const tokenIsValid = Boolean(requestedData);
 
-            if (!tokenIsValid)
+            if (!tokenIsValid) {
                if (mustHaveValidToken) {
                   router.replace(`/login?redirect=${'denied'}`);
                   return;
                }
+            }
 
-            if (tokenIsValid)
+            if (tokenIsValid) {
                if (!IsLoginPage()) {
                   setSessionProps(requestedData.data as SessionContextDataType);
                }
+            }
 
             setHasAccess(true);
 
@@ -88,7 +90,7 @@ function TokenAuthenticator(
 
       useEffect(ValidateAcess as () => void, []);
 
-      return hasAccess ? (
+      return hasAccess && !router.isFallback ? (
          <SessionContextProvider
             {...sessionProps}
             children={<Component {...props} />}
