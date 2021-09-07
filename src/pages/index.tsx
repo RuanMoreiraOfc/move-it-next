@@ -84,7 +84,11 @@ const getServerSideProps: GetServerSideProps = async ({
 }) => {
    const { token, token_type } = cookies;
 
-   function DataNotFoundCase(cenario: string) {
+   // IT IS SET TO STRICT ONLY AFTER SF_VALIDATE TO AVOID ERRORS OF NO DATA AT EXECUTION
+   // FIXME: MAKE IT STRICT EARLY
+   SetResponseCookies('strict')(response)([{ token }, { token_type }]);
+
+   function DataNotFoundCase(scenario: string) {
       SetResponseCookies('strict')(response)([
          { token: '' },
          { token_type: '' },
@@ -92,7 +96,7 @@ const getServerSideProps: GetServerSideProps = async ({
       return {
          redirect: {
             statusCode: 307,
-            destination: `/login?redirect=${cenario}`,
+            destination: `/login?redirect=${scenario}`,
          },
       } as GetServerSidePropsResult<HomeProps>;
    }

@@ -33,6 +33,10 @@ async function sf_validate(request: NextApiRequest, response: NextApiResponse) {
       (await ValidateToken(token_type, token).catch(console.log)) || null;
 
     if (!validatedData) {
+      SetResponseCookies('strict')(response)([
+        { token: '' },
+        { token_type: '' },
+      ]);
       response.status(401).redirect(`/login?redirect=${'database'}`).end();
       return;
     }
@@ -62,24 +66,22 @@ async function sf_validate(request: NextApiRequest, response: NextApiResponse) {
     }
 
     if (status >= 400) {
-      if (status !== 401) {
-        response
-          .status(404)
-          .redirect(`/login?redirect=${`generic-${status}`}`)
-          .end();
-        return;
-      }
-
       SetResponseCookies('strict')(response)([
         { token: '' },
         { token_type: '' },
       ]);
 
+      if (status !== 401) {
+        response
+          .status(status)
+          .redirect(`/login?redirect=${`generic-${status}`}`)
+          .end();
+        return;
+      }
+
       response.status(401).redirect(`/login?redirect=${'database'}`).end();
       return;
     }
-
-    SetResponseCookies('strict')(response)([{ token }, { token_type }]);
   }
 
   response.status(201).redirect('/').end();
@@ -97,9 +99,10 @@ async function ValidateToken(tokenType: string, token: string) {
     },
   };
 
-  const requestedData: AxiosResponse = await axios
-    .get('https://api.github.com/user', authHeader)
-    .catch((err) => null);
+  const requestedData: AxiosResponse =
+    (await axios
+      .get('https://api.github.com/user', authHeader)
+      .catch(console.log)) || null;
 
   return requestedData;
 }
