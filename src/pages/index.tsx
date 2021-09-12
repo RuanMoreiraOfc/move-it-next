@@ -9,7 +9,7 @@ import {
    ClearResponseCookies, //
 } from '@sf-utils/response';
 import { ValidateToken } from '@sf-auth/github/validate';
-import { GetDataType } from '@sf-database/mongo/get';
+import type { GetDataType } from '@sf-database/mongo/get';
 
 import TokenAuthenticator from '@u-hoc/TokenAuthenticator';
 
