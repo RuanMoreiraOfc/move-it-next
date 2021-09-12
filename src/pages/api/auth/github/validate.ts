@@ -4,7 +4,10 @@ import type { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 import axios from 'axios';
 
 import api from '@services/api';
-import { SetResponseCookies } from '@sf-utils/response';
+import {
+  SetResponseCookies,
+  ClearResponseCookies, //
+} from '@sf-utils/response';
 import type { AddBodyType } from '@sf-database/mongo/add';
 
 export default sf_validate;
@@ -33,10 +36,8 @@ async function sf_validate(request: NextApiRequest, response: NextApiResponse) {
       (await ValidateToken(token_type, token).catch(console.log)) || null;
 
     if (!validatedData) {
-      SetResponseCookies('strict')(response)([
-        { token: '' },
-        { token_type: '' },
-      ]);
+      ClearResponseCookies(response)([{ token }, { token_type }]);
+
       response.status(401).redirect(`/login?redirect=${'database'}`).end();
       return;
     }
@@ -66,10 +67,7 @@ async function sf_validate(request: NextApiRequest, response: NextApiResponse) {
     }
 
     if (status >= 400) {
-      SetResponseCookies('strict')(response)([
-        { token: '' },
-        { token_type: '' },
-      ]);
+      ClearResponseCookies(response)([{ token }, { token_type }]);
 
       if (status !== 401) {
         response

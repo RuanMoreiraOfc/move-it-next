@@ -4,11 +4,14 @@ import type { GetServerSideProps, GetServerSidePropsResult } from 'next';
 import type { ComponentProps } from 'react';
 
 import api from '@services/api';
-import { SetResponseCookies } from '@sf-utils/response';
+import {
+   SetResponseCookies,
+   ClearResponseCookies, //
+} from '@sf-utils/response';
 import { ValidateToken } from '@sf-auth/github/validate';
 import { GetDataType } from '@sf-database/mongo/get';
 
-import TokenAuthenticator from '../utils/HighOrderComponents/TokenAuthenticator';
+import TokenAuthenticator from '@u-hoc/TokenAuthenticator';
 
 import useSession from '@hooks/useSession';
 import useChallenges from '@hooks/useChallenges';
@@ -89,10 +92,8 @@ const getServerSideProps: GetServerSideProps = async ({
    SetResponseCookies('strict')(response)([{ token }, { token_type }]);
 
    function DataNotFoundCase(scenario: string) {
-      SetResponseCookies('strict')(response)([
-         { token: '' },
-         { token_type: '' },
-      ]);
+      ClearResponseCookies(response)([{ token }, { token_type }]);
+
       return {
          redirect: {
             statusCode: 307,

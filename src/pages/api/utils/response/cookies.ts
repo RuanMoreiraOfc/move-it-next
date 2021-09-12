@@ -4,9 +4,11 @@ import type { ServerResponse } from 'node:http';
 import type { CookieSerializeOptions } from 'cookie';
 import cookie from 'cookie';
 
-export { SetResponseCookies };
-
 export default null;
+export {
+  SetResponseCookies,
+  ClearResponseCookies, //
+};
 
 function GetCookieConfig(sameSite: 'lax' | 'strict') {
   const { NODE_ENV } = process.env;
@@ -49,4 +51,11 @@ function SetCookieDealer(config?: CookieSerializeOptions) {
 function SetResponseCookies(sameSite: 'lax' | 'strict' = 'strict') {
   return (response: NextApiResponse | ServerResponse) =>
     SetCookieDealer(GetCookieConfig(sameSite))(response);
+}
+
+function ClearResponseCookies(response: NextApiResponse | ServerResponse) {
+  return SetCookieDealer({
+    ...GetCookieConfig('strict'),
+    expires: new Date(0),
+  })(response);
 }
