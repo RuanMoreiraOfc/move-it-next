@@ -94,7 +94,9 @@ export default async function (
     return;
   }
 
-  const completeUserData: SetUserDataType = Object.assign(userData, { login });
+  const completeUserData: SetUserDataType = Object.assign({}, userData, {
+    login,
+  });
 
   const searchProps: SearchProps = { filter: { login }, collection };
   const responseIt = await AddUser({ userData: completeUserData, searchProps });
