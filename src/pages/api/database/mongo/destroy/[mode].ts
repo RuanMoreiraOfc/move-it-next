@@ -27,7 +27,7 @@ async function sf_destroy_mode(
     return;
   }
 
-  const { query, body, cookies } = request;
+  const { query, body } = request;
 
   const mode: EnumAcceptedMode = IsModeAcceptable(query.mode as string)(
     response,
@@ -42,6 +42,7 @@ async function sf_destroy_mode(
   }
 
   const { filter }: FilterProps = body;
+  const { secretKey }: { secretKey: string } = body;
 
   if (!('login' in filter) || !filter.login) {
     ResponseDealer({
@@ -52,12 +53,7 @@ async function sf_destroy_mode(
     return;
   }
 
-  // TODO: STUDY ABOUT E-TAGS TO AVOID MULTIPLE VALIDATIONS
-  if (
-    filter.login !==
-    ((await ValidateToken(cookies.token_type, cookies.token)) || null)?.data
-      ?.login
-  ) {
+  if (secretKey !== process.env.SECRET_SF_KEY) {
     ResponseDealer({
       response,
       status: 403,
