@@ -1,10 +1,10 @@
 import type { NextApiResponse } from 'next';
 
 import { ResponseDealer } from '@sf-utils/response';
-
-export { EnumAcceptedMode, IsModeAcceptable, ModeFilter };
+import type { FilterOptionsType } from '@sf-database/mongo/get';
 
 export default null;
+export { EnumAcceptedMode, IsModeAcceptable, ModeFilter };
 
 enum EnumAcceptedMode {
   all = 1,
@@ -34,7 +34,10 @@ function IsModeAcceptable(mode: string) {
     });
 }
 
-function ModeFilter(filter: object, mode: EnumAcceptedMode) {
+function ModeFilter(
+  filter: FilterOptionsType,
+  mode: EnumAcceptedMode,
+): {} | FilterOptionsType {
   if (mode === EnumAcceptedMode.all) {
     return {};
   }

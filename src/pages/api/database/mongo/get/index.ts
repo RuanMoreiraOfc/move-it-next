@@ -1,13 +1,14 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
+
+import type { Collection } from 'mongodb';
 
 import { ResponseDealer } from '@sf-utils/response';
-
-import { Collection } from 'mongodb';
 
 export default sf_get;
 export type {
   GetQueryType,
   ApiSearchOptionsType,
+  FilterOptionsType,
   SearchOptionsType,
   FilterProps,
   CollectionProps,
@@ -24,6 +25,8 @@ type ApiSearchOptionsType = {
   sort?: '{[key: string]: -1 | 1}';
 };
 
+type FilterOptionsType = GetDataType & { login: string };
+
 type SearchOptionsType = {
   limit?: number;
   skip?: number;
@@ -31,7 +34,7 @@ type SearchOptionsType = {
 };
 
 type FilterProps = {
-  filter: GetDataType;
+  filter: {} | FilterOptionsType;
   options?: SearchOptionsType;
 };
 

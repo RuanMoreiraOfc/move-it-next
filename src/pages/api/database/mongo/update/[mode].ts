@@ -6,7 +6,8 @@ import {
   IsModeAcceptable,
 } from '@sf-utils/request/database/mode';
 import { ResponseDealer } from '@sf-utils/response';
-import type { GetDataType, SearchProps } from '@sf-database/mongo/get';
+import { ValidateToken } from '@sf-auth/github/validate';
+import type { SearchProps } from '@sf-database/mongo/get';
 import { GetCurrentDbCollection } from '@sf-database/mongo/connect';
 import type { PutDataType } from '.';
 import { UpdateUser } from '.';
@@ -23,16 +24,43 @@ async function sf_update_mode(
     return;
   }
 
-  // TODO: SAFETY VERIFY
-
-  const { query, body } = request;
+  const { query, body, cookies } = request;
 
   const mode: EnumAcceptedMode = IsModeAcceptable(query.mode as string)(
     response,
   );
-  if (!mode) return;
+  if (!mode) {
+    ResponseDealer({
+      response,
+      status: 400,
+      json: { error: 'Mode is required!' },
+    });
+    return;
+  }
 
   const { filter, userData }: PutDataType = body;
+
+  if (!('login' in filter) || !filter.login) {
+    ResponseDealer({
+      response,
+      status: 400,
+      json: { error: 'Login is required!' },
+    });
+    return;
+  }
+
+  // TODO: STUDY ABOUT E-TAGS TO AVOID MULTIPLE VALIDATIONS
+  if (
+    filter.login !==
+    ((await ValidateToken(cookies.token_type, cookies.token)) || null)?.data
+      ?.login
+  ) {
+    ResponseDealer({
+      response,
+      status: 403,
+    });
+    return;
+  }
 
   const collection = await GetCurrentDbCollection();
 
@@ -46,7 +74,7 @@ async function sf_update_mode(
   }
 
   const searchProps: SearchProps = {
-    filter: ModeFilter(filter, mode) as GetDataType,
+    filter: ModeFilter(filter, mode),
     collection,
   };
   const responseIt = await UpdateUser({ userData, searchProps }, mode);

@@ -7,7 +7,7 @@ import { GetCurrentDbCollection } from '@sf-database/mongo/connect';
 
 export type { AddBodyType };
 
-type AddBodyType = SetUserDataType;
+type AddBodyType = SetUserDataType & { secretKey: string };
 
 type SetUserDataType = {
   login: string;
@@ -70,9 +70,16 @@ export default async function (
     return;
   }
 
-  // TODO: SAFETY VERIFY
+  const { secretKey, login, ...userData }: AddBodyType = request.body;
 
-  const { login, ...userData }: AddBodyType = request.body;
+  if (process.env.SECRET_SF_KEY !== secretKey) {
+    ResponseDealer({
+      response,
+      status: 403,
+      json: { error: 'Secret key is missing!' },
+    });
+    return;
+  }
 
   if (!login) {
     ResponseDealer({

@@ -30,6 +30,7 @@ async function sf_validate(request: NextApiRequest, response: NextApiResponse) {
   }
 
   /* ---- ADD TO DATABASE */ {
+    const { SECRET_SF_KEY: secretKey } = environment;
     const { token, token_type } = cookies;
 
     const validatedData: AxiosResponse =
@@ -46,6 +47,7 @@ async function sf_validate(request: NextApiRequest, response: NextApiResponse) {
 
     const { status } = await api
       .post('/database/mongo/add', {
+        secretKey,
         login,
         name,
         level: 1,
