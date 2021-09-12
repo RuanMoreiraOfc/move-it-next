@@ -4,17 +4,17 @@ import { ResponseDealer } from '@sf-utils/response';
 
 import { Collection } from 'mongodb';
 
+export default sf_get;
 export type {
   GetQueryType,
   ApiSearchOptionsType,
   SearchOptionsType,
   FilterProps,
-  CollecitonProps,
+  CollectionProps,
   SearchProps,
   GetDataType,
 };
 export { GetUserRaw, GetUser, GetUserStatus };
-export default sf_get;
 
 type GetQueryType = GetDataType;
 
@@ -35,11 +35,11 @@ type FilterProps = {
   options?: SearchOptionsType;
 };
 
-type CollecitonProps = {
+type CollectionProps = {
   collection: Collection<any>;
 };
 
-type SearchProps = CollecitonProps & FilterProps;
+type SearchProps = CollectionProps & FilterProps;
 
 type GetDataType = {
   // _id?: string;

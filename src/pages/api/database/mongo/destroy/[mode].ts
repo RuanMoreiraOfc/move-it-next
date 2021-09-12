@@ -6,7 +6,7 @@ import {
   ModeFilter,
   IsModeAcceptable,
 } from '@sf-utils/request/database/mode';
-import { GetCurrentDbColleciton } from '@sf-database/mongo/connect';
+import { GetCurrentDbCollection } from '@sf-database/mongo/connect';
 import type {
   FilterProps,
   GetDataType,
@@ -37,7 +37,7 @@ async function sf_destroy_mode(
 
   const { filter }: FilterProps = body;
 
-  const collection = await GetCurrentDbColleciton();
+  const collection = await GetCurrentDbCollection();
 
   if (collection instanceof Error) {
     ResponseDealer({

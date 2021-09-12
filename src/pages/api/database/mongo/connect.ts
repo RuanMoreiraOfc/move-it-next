@@ -1,10 +1,8 @@
 import url from 'url';
 import { MongoClient, Db } from 'mongodb';
 
-import { ResponseDealer } from '@sf-utils/response';
-
-export { GetCurrentDbColleciton };
 export default null;
+export { GetCurrentDbCollection };
 
 let cachedDb: Db = null;
 
@@ -28,7 +26,7 @@ async function ConnectToDb() {
   return db;
 }
 
-async function GetCurrentDbColleciton() {
+async function GetCurrentDbCollection() {
   const { MONGODB_COLLECTION } = process.env;
 
   const db = await ConnectToDb();

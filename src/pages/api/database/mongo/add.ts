@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { ResponseDealer } from '@sf-utils/response';
 import type { SearchProps } from '@sf-database/mongo/get';
 import { GetUserStatus } from '@sf-database/mongo/get';
-import { GetCurrentDbColleciton } from '@sf-database/mongo/connect';
+import { GetCurrentDbCollection } from '@sf-database/mongo/connect';
 
 export type { AddBodyType };
 
@@ -83,7 +83,7 @@ export default async function (
     return;
   }
 
-  const collection = await GetCurrentDbColleciton();
+  const collection = await GetCurrentDbCollection();
 
   if (collection instanceof Error) {
     ResponseDealer({

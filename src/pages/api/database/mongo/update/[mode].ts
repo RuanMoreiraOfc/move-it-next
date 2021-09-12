@@ -7,7 +7,7 @@ import {
 } from '@sf-utils/request/database/mode';
 import { ResponseDealer } from '@sf-utils/response';
 import type { GetDataType, SearchProps } from '@sf-database/mongo/get';
-import { GetCurrentDbColleciton } from '@sf-database/mongo/connect';
+import { GetCurrentDbCollection } from '@sf-database/mongo/connect';
 import type { PutDataType } from '.';
 import { UpdateUser } from '.';
 
@@ -34,7 +34,7 @@ async function sf_update_mode(
 
   const { filter, userData }: PutDataType = body;
 
-  const collection = await GetCurrentDbColleciton();
+  const collection = await GetCurrentDbCollection();
 
   if (collection instanceof Error) {
     ResponseDealer({

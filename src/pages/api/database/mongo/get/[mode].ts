@@ -6,7 +6,7 @@ import {
   IsModeAcceptable,
 } from '@sf-utils/request/database/mode';
 import { ResponseDealer } from '@sf-utils/response';
-import { GetCurrentDbColleciton } from '@sf-database/mongo/connect';
+import { GetCurrentDbCollection } from '@sf-database/mongo/connect';
 import type { GetDataType, ApiSearchOptionsType, SearchProps } from '.';
 import { GetUser } from '.';
 
@@ -38,7 +38,7 @@ async function sf_get_mode(request: NextApiRequest, response: NextApiResponse) {
       return;
     }
 
-  const collection = await GetCurrentDbColleciton();
+  const collection = await GetCurrentDbCollection();
 
   if (collection instanceof Error) {
     ResponseDealer({
