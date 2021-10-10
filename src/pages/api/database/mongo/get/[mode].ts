@@ -7,7 +7,12 @@ import {
 } from '@sf-utils/request/database/mode';
 import { ResponseDealer } from '@sf-utils/response';
 import { GetCurrentDbCollection } from '@sf-database/mongo/connect';
-import type { GetDataType, ApiSearchOptionsType, SearchProps } from '.';
+import type {
+  GetDataType,
+  ApiSearchOptionsType,
+  SearchProps,
+  FilterOptionsType,
+} from '.';
 import { GetUser } from '.';
 
 export default sf_get_mode;
@@ -49,8 +54,8 @@ async function sf_get_mode(request: NextApiRequest, response: NextApiResponse) {
     return;
   }
 
-  const { limit, skip, sort, ...rest } = filterParams as ApiSearchOptionsType &
-    GetDataType;
+  const { limit, skip, sort, ...rest } =
+    filterParams as unknown as ApiSearchOptionsType & FilterOptionsType;
 
   console.log();
 
