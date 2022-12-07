@@ -2,8 +2,6 @@ import challenges from '../../challenges.json';
 
 import { useState, useEffect, createContext, ReactNode } from 'react';
 
-import { CalculateAscendingSequence } from '@u-functions/Array';
-
 import axios from 'axios';
 import { UpdateBodyType } from '@sf-database/mongo/update';
 
@@ -118,11 +116,24 @@ function ChallengesContextProvider({
 
    const [isLevelModalOpen, setisLevelModalOpen] = useState(false);
 
-   const getExperienceByLevel = (currentLevel = levelRaw) =>
-      CalculateAscendingSequence(
-         currentLevel - 1,
-         (acc, index) => acc + getExperienceToNextLevel(index + 1),
-      );
+   // see more in: https://pballew.blogspot.com/2012/12/my-formula-for-series-of-squares-of.html
+   const getExperienceByLevel = (currentLevel = levelRaw) => {
+      if (currentLevel <= 1) {
+         return 0;
+      }
+
+      currentLevel--;
+
+      const ratio = 4;
+      const firstTerm = 8;
+      const arithmeticSequence =
+         ((((2 * currentLevel - 1) * ratio ** 2) / 6 + firstTerm * ratio) *
+            (currentLevel - 1) +
+            firstTerm ** 2) *
+         currentLevel;
+
+      return Math.floor(arithmeticSequence);
+   };
    const getExperienceToNextLevel = (currentLevel = levelDelayed) =>
       ((currentLevel + 1) * 4) ** 2;
 
