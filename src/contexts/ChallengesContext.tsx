@@ -5,6 +5,8 @@ import { useState, useEffect, createContext, ReactNode } from 'react';
 import axios from 'axios';
 import { UpdateBodyType } from '@sf-database/mongo/update';
 
+import { kSquaredSigma } from '@u-functions/Sigma';
+
 import useSession from '@hooks/useSession';
 
 import LevelUpModal from '@components/LevelUpModal';
@@ -116,26 +118,18 @@ function ChallengesContextProvider({
 
    const [isLevelModalOpen, setisLevelModalOpen] = useState(false);
 
-   // see more in: https://pballew.blogspot.com/2012/12/my-formula-for-series-of-squares-of.html
-   const getExperienceByLevel = (currentLevel = levelRaw) => {
-      if (currentLevel <= 1) {
-         return 0;
-      }
+   const EXPERIENCE_SCALE = 4 ** 2;
 
-      currentLevel--;
-
-      const ratio = 4;
-      const firstTerm = 8;
-      const arithmeticSequence =
-         ((((2 * currentLevel - 1) * ratio ** 2) / 6 + firstTerm * ratio) *
-            (currentLevel - 1) +
-            firstTerm ** 2) *
-         currentLevel;
-
-      return Math.floor(arithmeticSequence);
+   /** currentLevel >= 1 */
+   const getExperienceByLevel = (currentLevel: number = levelRaw) => {
+      return EXPERIENCE_SCALE * kSquaredSigma({ n: currentLevel, k: 2 });
    };
-   const getExperienceToNextLevel = (currentLevel = levelDelayed) =>
-      ((currentLevel + 1) * 4) ** 2;
+
+   /** currentLevel >= 1 */
+   const getExperienceToNextLevel = (currentLevel: number = levelDelayed) => {
+      const nextLevel = currentLevel + 1;
+      return EXPERIENCE_SCALE * nextLevel ** 2;
+   };
 
    //#endregion
 
